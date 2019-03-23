@@ -9,7 +9,7 @@
         <el-input
           placeholder="请输入内容"
           prefix-icon="el-icon-search"
-          @keyup.enter="toSearch()">
+          @keyup.enter="toSearch">
         </el-input>
       </el-menu-item>
     </el-menu>

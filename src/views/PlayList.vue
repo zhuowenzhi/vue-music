@@ -4,14 +4,12 @@
       <NavMenu></NavMenu>
     </div>
       <div class="main">
-        <Aside></Aside>
          <div class="main-right">
            <div class="main-right-songinfo">
              <img src="http://img.hb.aicdn.com/60f788fc2a846192f224b9e6d4904b30e54926211d3d67-ACFJ9G_fw658" alt="">
              <div class="main-right-songinfo-right">
                 <div class="main-right-songinfo-listname">
                   <el-button type="danger">歌单</el-button>
-                  <Dialog></Dialog>
                   <span>我喜欢的音乐</span>
                 </div>
                 <div class="main-right-songinfo--userinfo">
@@ -29,26 +27,18 @@
            <SongTable></SongTable>
          </div>
       </div>
-     <div class="my-audio">
-        <Audio></Audio>
-     </div>
   </div>
 </template>
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-import Aside from '../components/Aside.vue'
 import SongTable from '../components/SongTable.vue'
-import Dialog from '../components/Dialog.vue'
-import Audio from '../components/Audio.vue'
+
 export default {
-  name: 'MyMusic',
+  name: 'PlayList',
   components: {
     NavMenu,
-    Aside,
-    SongTable,
-    Dialog,
-    Audio
+    SongTable
   }
 }
 </script>
@@ -100,11 +90,5 @@ export default {
 .main-right-songinfo--userinfo img{
   width: 50px;
   height: 50px;
-}
-.my-audio {
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
 }
 </style>

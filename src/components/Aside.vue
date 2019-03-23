@@ -32,13 +32,13 @@ export default {
     return {
       lists: [
         {
-          listUrl:'',
+          listUrl: ' http://music.163.com/song/media/outer/url?id=460578140',
           imgUrl: 'http://img.hb.aicdn.com/22ded455284aab361b8d2056e82f74a891a019704296a-PSraEB_fw658" alt="',
           name: '我喜欢的音乐',
           number: '9'
         },
         {
-          listUrl:'',
+          listUrl: ' http://music.163.com/song/media/outer/url?id=460578140',
           imgUrl: 'http://img.hb.aicdn.com/22ded455284aab361b8d2056e82f74a891a019704296a-PSraEB_fw658" alt="',
           name: '轻音乐',
           number: '10'
