@@ -5,31 +5,27 @@
     </div>
     <div class="main">
        <div class="recommend-title">
-        <h1>全部</h1>
+        <h1>{{tagName}}</h1>
         <div class="choose" @click="choose()">
           <el-button type="success">选择分类</el-button>
         </div>
       </div>
       <div class="choose-classification" v-show="show">
-        <div class="choose-classification-bar">
-          <div class="choose-classification-bar-ch">语言</div>
-          <ul class="choose-classification-ul">
-            <li>华语</li>
-            <li>欧美</li>
-            <li>日语</li>
-            <li>华语</li>
-            <li>欧美</li>
-            <li>日语</li>
+          <ul class="choose-classification-ul" v-for="(item, index) in tags" :key="index">
+            <li ref="item.id" @click="getTagList(item.tagId,item.name)">{{ item.name }}</li>
           </ul>
-        </div>
       </div>
       <div class="line"></div>
-      <Recommend></Recommend>
+      <Recommend :list="list"></Recommend>
       <div class="index-pagination">
         <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="1000">
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :page-sizes="[5, 10, 20, 40]"
+        layout="total, prev, pager, next, jumper"
+        :total="totalDataList">
         </el-pagination>
       </div>
     </div>
@@ -47,13 +43,133 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      tagId: 2,
+      tagName: '全部',
+      name: '',
+      type: '',
+      category: '',
+      hot: '',
+      tags: [],
+      songlistId: '',
+      songlistid: '',
+      songlistname: '',
+      songlistpic: '',
+      songlistcount: '',
+      songlistplaycount: '',
+      emotionvalue: '',
+      songlistdescription: '',
+      tagbody: '',
+      list: [],
+      currentPage: 1,
+      page: 1,
+      pageSize: 12,
+      pageNum: 1,
+      totalDataList: 0
     }
   },
   methods: {
     choose () {
       this.show = !this.show
+    },
+    getTag () {
+      var _this = this
+      _this.$axios.get('http://localhost:8088/music/kd/getAllTag').then(function (res) {
+        for (let i = 0; i < res.data.payload.length; i++) {
+          _this.tags.push({
+            tagId: res.data.payload[i].id,
+            number: i + 1,
+            name: res.data.payload[i].name,
+            category: res.data.payload[i].category,
+            type: res.data.payload[i].type,
+            hot: res.data.payload[i].hot
+          })
+        
+        }
+      }, function () {
+        console.log('请求失败处理')
+      })
+    },
+    getTagList (tagId, tagName) {
+      var _this = this
+      _this.tagName = tagName
+      _this.$axios.get('http://localhost:8088/music/kd/getHotSongSheet/', {
+        params: {
+          tagId: tagId,
+          pageSize: _this.pageSize,
+          pageNum: _this.pageNum
+        }
+      }).then(function (res) {
+        console.log(res)
+         for (let i = 0; i < res.data.payload.list.length; i++) {
+          _this.list.push({
+            songlistid: res.data.payload.list[i].songlistid,
+            number: i + 1,
+            songlistname: res.data.payload.list[i].songlistname,
+            songlistpic: res.data.payload.list[i].songlistpic,
+            songlistcount: res.data.payload.list[i].songlistcount,
+            songlistplaycount: res.data.payload.list[i].songlistplaycount,
+            emotionvalue: res.data.payload.list[i].emotionvalue,
+            songlistdescription: res.data.payload.list[i].songlistdescription,
+            tagbody: res.data.payload.list[i].tagbody,
+          })
+          _this.currentPage = res.data.payload.currentPage,
+          _this.pageSize = res.data.payload.pageSize,
+          _this.pageNum = res.data.payload.pageNum
+        }
+        _this.totalDataList = res.data.payload.total
+        _this.show = false
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    handleSizeChange (size) {
+      var _this = this
+      _this.pageSize = size
+      _this.handlePageList()
+    },
+    handleCurrentChange (currentPage) {
+      var _this = this
+      _this.pageNum = currentPage
+      _this.handlePageList()
+    },
+    handlePageList () {
+      this.loading = true
+      var _this = this
+      _this.$axios.get('http://localhost:8088/music/kd/getSongSheetByTagId/', {
+        params: {
+          tagId: 2,
+          pageSize: _this.pageSize,
+          pageNum: _this.pageNum
+        }
+      }).then(function (res) {
+         for (let i = 0; i < res.data.payload.list.length; i++) {
+          _this.list.push({
+            songlistid: res.data.payload.list[i].songlistid,
+            number: i + 1,
+            songlistname: res.data.payload.list[i].songlistname,
+            songlistpic: res.data.payload.list[i].songlistpic,
+            songlistcount: res.data.payload.list[i].songlistcount,
+            songlistplaycount: res.data.payload.list[i].songlistplaycount,
+            emotionvalue: res.data.payload.list[i].emotionvalue,
+            songlistdescription: res.data.payload.list[i].songlistdescription,
+            tagbody: res.data.payload.list[i].tagbody,
+          })
+          _this.currentPage = res.data.payload.currentPage,
+          _this.pageSize = res.data.payload.pageSize,
+          _this.pageNum = res.data.payload.pageNum
+        }
+        _this.totalDataList = res.data.payload.total
+      }).catch(function (error) {
+        console.log(error)
+      })
     }
+  },
+  created () {
+    this.handlePageList()
+  },
+  mounted: function () {
+    this.getTag()
   }
 }
 </script>
@@ -90,31 +206,28 @@ export default {
 }
 
 .choose-classification {
+  width: 600px;
   position: absolute;
-  top: 60px;
-  left: 100px;
+  top: 0px;
+  left: 160px;
   border: 1px #ccc solid;
   padding: 10px;
   z-index: 999;
-  background-color: #f5f5f5;
+  background-color:#1c030373;
+  color: #fff;
 }
-.choose-classification-ul,.choose-classification-bar{
-  width: 100%;
-  display: flex;
-  display: -webkit-flex;
-}
-.choose-classification-bar {
-  height: 25px;
-  align-items: center;
-}
+
 .choose-classification-bar-ch {
   width: 80px;
 }
 .choose-classification-ul li{
+  float: left;
+  width: 70px;
+  text-align: center;
   border-right: 1px solid #ccc;
   height: 20px;
   line-height: 20px;
-  margin-right: 10px;
+  margin: 10px 10px;
   padding-right: 5px;
 }
 </style>

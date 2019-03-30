@@ -19,7 +19,6 @@
                 </div>
                 <div>
                   <el-button type="success" icon="el-icon-caret-right">播放</el-button>
-                  <el-button type="info" icon="el-icon-tickets">信息按钮</el-button>
                 </div>
              </div>
            </div>

@@ -1,20 +1,18 @@
 <template>
   <div class="recommend">
-  
-     <div class="main-row" >
-        <a :href="item.recommendUrl" v-for="(item, index) in objectRecommends" :key="index" class="main-row-col">
+     <div class="main-row">
+        <div v-for="(item, index) in list" ref="item.songlistid" @click="getId(item.songlistid)" :key="index" class="main-row-col">
             <div class="main-row-col-img">
-                <img :src="item.imgUrl" alt="">
+                <img :src="item.songlistpic" alt="">
                 <div class="main-row-col-listeners">
                   <i class="el-icon-service"></i>
-                  <span>{{item.person}}</span>
+                  <span>{{item.songlistplaycount}}</span>
                   <i class="el-icon-caret-right"></i>
                 </div>
             </div>
-            <span class="main-row-col-span">{{item.title}}</span>
-        </a>
+            <span class="main-row-col-span">{{item.songlistname}}</span>
+        </div>
     </div>
-
   </div>
 </template>
 
@@ -22,43 +20,45 @@
 export default {
   name: 'Recommend',
   props: {
-    msg: String
+    list: {
+      type: Array,
+      default () {
+        return ['']
+      }
+    }
   },
   data () {
     return {
-      objectRecommends: [
-        {
-          recommendUrl: '#',
-          imgUrl: 'http://img.hb.aicdn.com/adbde61e4343dedd21e97ea7f22666825a8db7d077ffe-qn8Pjn_fw658',
-          person: '1233',
-          title: '话语速爆歌单1'
-        },
-        {
-          recommendUrl: '#',
-          imgUrl: 'http://img.hb.aicdn.com/adeed7d28df6e776c2fa6032579c697381d1a82b7fe00-fwRqgn_fw658',
-          person: '1233',
-          title: '话语速爆歌单2'
-        },
-        {
-          recommendUrl: '#',
-          imgUrl: 'http://img.hb.aicdn.com/ab7f48509b3c0353017d9a85ef1d12400c9b2724540d4-p3zouo_fw658',
-          person: '1233',
-          title: '话语速爆歌单3'
-        },
-        {
-          recommendUrl: '#',
-          imgUrl: 'http://img.hb.aicdn.com/60f788fc2a846192f224b9e6d4904b30e54926211d3d67-ACFJ9G_fw658',
-          person: '1233',
-          title: '话语速爆歌单4'
-        },
-        {
-          recommendUrl: '#',
-          imgUrl: 'http://img.hb.aicdn.com/60f788fc2a846192f224b9e6d4904b30e54926211d3d67-ACFJ9G_fw658',
-          person: '1233',
-          title: '话语速爆歌单5'
-        }
-      ]
+      pageSize: 12,
+      pageNum: 1,
+      currentPage: 1,
+      value: {}
     }
+  },
+  methods: {
+    getId (songlistid) {
+      var _this = this
+      _this.$axios.get('http://localhost:8088/music/kd/getMusicSheetById', {
+        params: {
+          songlistId: songlistid,
+          pageSize: _this.pageSize,
+          pageNum: _this.pageNum
+        }
+      }).then(function (res) {
+        _this.$router.push({
+          path: '/mymusic',
+          name: 'MyMusic',
+          params: {
+            songlistId: songlistid
+          }
+        })
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
+  },
+  created () {
+    this.Bus.$emit('txt', this.value)
   }
 }
 </script>
@@ -68,8 +68,6 @@ export default {
   width: 100%;
   margin: 30px auto;
 }
-
-
 .main-row {
   display: flex;
   display: -webkit-flex;
@@ -80,7 +78,6 @@ export default {
   height: 230px;
   margin: 2.5%;
 }
-
 .main-row-col-img {
   width: 100%;
   height: 190px;
@@ -133,6 +130,4 @@ li {
   display: inline-block;
   margin: 0 10px;
 }
-
-
 </style>

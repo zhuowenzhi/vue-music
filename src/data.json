@@ -1,0 +1,312 @@
+{
+    "result": "SUCCESS",
+    " code": 200,
+    "data": {
+    "songListId": "3778678",
+    "songListName": "云音乐热歌榜",
+    "songListPic": "https://p1.music.126.net/GhhuF6Ep5Tq9IEvLsyCN7w==/18708190348409091.jpg?param=400y400",
+    "songListCount": 200,
+    "songListPlayCount": 3429002752,
+    "songListDescription": "云音乐热歌榜：云音乐用户一周内收听所有线上歌曲 官方TOP排行榜，每周四更新。",
+    "songListUserId": 1,
+   " songs": [
+    {
+    "id": "1345848098",
+    "name": "绿色",
+    "singer": "陈雪凝",
+    "pic": "http://p1.music.126.net/R4ZP3AJ9xV0vvw8LX7AbMA==/109951163860425334.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1345848098&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1345848098&key=579621905",
+    "time": 269
+    },
+    {
+    "id": "1313354324",
+    "name": "出山",
+    "singer": "花粥/胜娚",
+    "pic": "http://p1.music.126.net/xUAfdMHdXhu3BmO4g8nOYA==/109951163573311341.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1313354324&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1313354324&key=579621905",
+    "time": 200
+    },
+    {
+    "id": "1336856777",
+    "name": "我曾",
+    "singer": "隔壁老樊",
+    "pic": "http://p1.music.126.net/KK3YNRE9flpcZCYkDS8Z3g==/109951163826159510.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1336856777&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1336856777&key=579621905",
+    "time": 285
+    },
+    {
+    "id": "1315718569",
+    "name": "有一种悲伤",
+    "singer": "A-Lin",
+    "pic": "http://p1.music.126.net/GsZ4ogeTs5irPYryEU5THA==/109951163790101346.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1315718569&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1315718569&key=579621905",
+    "time": 237
+    },
+    {
+    "id": "28111646",
+    "name": "只是太爱你",
+    "singer": "张敬轩",
+    "pic": "http://p1.music.126.net/MbAMGidLob2YUEsw732PXw==/18815942488049510.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=28111646&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=28111646&key=579621905",
+    "time": 251
+    },
+    {
+    "id": "520482501",
+    "name": "像暗杀似的绕到背后突然拥抱你",
+    "singer": "太一",
+    "pic": "http://p1.music.126.net/Bp1R70sJ6dR_OvLbPUek2Q==/109951163068848001.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=520482501&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=520482501&key=579621905",
+    "time": 164
+    },
+    {
+    "id": "534540206",
+    "name": "告白の夜",
+    "singer": "Ayasa绚沙",
+    "pic": "http://p1.music.126.net/2qrocnJi7OjEHp8tEHAyxw==/109951163128412042.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=534540206&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=534540206&key=579621905",
+    "time": 290
+    },
+    {
+    "id": "574566207",
+    "name": "盗将行",
+    "singer": "花粥/马雨阳",
+    "pic": "http://p1.music.126.net/-qHPT3rhxDlu5zQV9NcQ-A==/109951163555860423.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=574566207&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=574566207&key=579621905",
+    "time": 198
+    },
+    {
+    "id": "1346104327",
+    "name": "多想在平庸的生活拥抱你",
+    "singer": "隔壁老樊",
+    "pic": "http://p1.music.126.net/z-KH6R1-HP1lpCWSnmKy8Q==/109951163911444882.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1346104327&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1346104327&key=579621905",
+    "time": 269
+    },
+    {
+    "id": "441491828",
+    "name": "水星记",
+    "singer": "郭顶",
+    "pic": "http://p1.music.126.net/wSMfGvFzOAYRU_yVIfquAA==/2946691248081599.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=441491828&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=441491828&key=579621905",
+    "time": 325
+    },
+    {
+    "id": "1328146041",
+    "name": "下坠Falling",
+    "singer": "Corki",
+    "pic": "http://p1.music.126.net/N1ijsfnH6Kvcl_3Wsr9ePA==/109951163699680683.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1328146041&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1328146041&key=579621905",
+    "time": 225
+    },
+    {
+    "id": "1338695683",
+    "name": "起风了",
+    "singer": "吴青峰",
+    "pic": "http://p2.music.126.net/aMVPsO00OqlVTS2yMH8RgA==/109951163785600029.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1338695683&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1338695683&key=579621905",
+    "time": 313
+    },
+    {
+    "id": "26217171",
+    "name": "有可能的夜晚",
+    "singer": "曾轶可",
+    "pic": "http://p2.music.126.net/QJYb5PP_YtSU8yeopkMnWg==/109951163077573267.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=26217171&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=26217171&key=579621905",
+    "time": 279
+    },
+    {
+    "id": "553815178",
+    "name": "静悄悄",
+    "singer": "陈泫孝（大泫）",
+    "pic": "http://p2.music.126.net/_AFGOj5fv7CzCgrUadWztQ==/109951163254735616.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=553815178&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=553815178&key=579621905",
+    "time": 185
+    },
+    {
+    "id": "1349892968",
+    "name": "Lovebird",
+    "singer": "Far East Movement/张艺兴",
+    "pic": "http://p2.music.126.net/zRzQpd8ZMWe-OwZTfSpUFg==/109951163918544809.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1349892968&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1349892968&key=579621905",
+    "time": 207
+    },
+    {
+    "id": "1346093140",
+    "name": "关于孤独我想说的话 ",
+    "singer": "隔壁老樊",
+    "pic": "http://p2.music.126.net/fYvOs5s6tNzEBprpnvae3g==/109951163881586337.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1346093140&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1346093140&key=579621905",
+    "time": 291
+    },
+    {
+    "id": "476513774",
+    "name": "琵琶行",
+    "singer": "奇然/沈谧仁",
+    "pic": "http://p2.music.126.net/NQBaw13hHiaTh41QQUYsQg==/109951162922231753.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=476513774&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=476513774&key=579621905",
+    "time": 335
+    },
+    {
+    "id": "28481189",
+    "name": "Monsters",
+    "singer": "Katie Sky",
+    "pic": "http://p2.music.126.net/YPh291Jw4Lzy7x1iT_Aw5A==/109951163510035145.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=28481189&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=28481189&key=579621905",
+    "time": 217
+    },
+    {
+    "id": "516728102",
+    "name": "浪子回头",
+    "singer": "茄子蛋",
+    "pic": "http://p2.music.126.net/emWwYFceRZ2plNWgnGUDfg==/109951163333175426.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=516728102&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=516728102&key=579621905",
+    "time": 259
+    },
+    {
+    "id": "449818741",
+    "name": "光年之外",
+    "singer": "G.E.M.邓紫棋",
+    "pic": "http://p2.music.126.net/fkqFqMaEt0CzxYS-0NpCog==/18587244069235039.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=449818741&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=449818741&key=579621905",
+    "time": 235
+    },
+    {
+    "id": "571338279",
+    "name": "往后余生",
+    "singer": "王贰浪",
+    "pic": "http://p2.music.126.net/hTiVEeQTUSsc-YGF3o6ItQ==/109951163337847600.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=571338279&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=571338279&key=579621905",
+    "time": 231
+    },
+    {
+    "id": "1293886117",
+    "name": "年少有为",
+    "singer": "李荣浩",
+    "pic": "http://p2.music.126.net/tt8xwK-ASC2iqXNUXYKoDQ==/109951163606377163.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1293886117&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1293886117&key=579621905",
+    "time": 279
+    },
+    {
+    "id": "460578140",
+    "name": "感谢你曾来过",
+    "singer": "阿涵/Ayo97",
+    "pic": "http://p2.music.126.net/iL36G-e6rm2zwCUmlL4pOw==/109951162859100521.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=460578140&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=460578140&key=579621905",
+    "time": 236
+    },
+    {
+    "id": "1330348068",
+    "name": "起风了",
+    "singer": "买辣椒也用券",
+    "pic": "http://p2.music.126.net/diGAyEmpymX8G7JcnElncQ==/109951163699673355.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1330348068&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1330348068&key=579621905",
+    "time": 325
+    },
+    {
+    "id": "515453363",
+    "name": "All Falls Down",
+    "singer": "Alan Walker/Digital Farm Animals/Noah Cyrus",
+    "pic": "http://p2.music.126.net/rTb28CZeLWxIRuSlJWkPLQ==/18850027346628137.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=515453363&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=515453363&key=579621905",
+    "time": 199
+    },
+    {
+    "id": "526646591",
+    "name": "（笑）",
+    "singer": "太一",
+    "pic": "http://p2.music.126.net/6nWWKQDYG4zbDcs5t4G-lQ==/109951163094418589.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=526646591&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=526646591&key=579621905",
+    "time": 227
+    },
+    {
+    "id": "504835560",
+    "name": "假装",
+    "singer": "陈雪凝",
+    "pic": "http://p2.music.126.net/LLI28TeCfNBo6DK1Ct1k4Q==/109951163249809425.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=504835560&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=504835560&key=579621905",
+    "time": 264
+    },
+    {
+    "id": "536622304",
+    "name": "Lemon",
+    "singer": "米津玄師",
+    "pic": "http://p2.music.126.net/6IeZ9MiSSDXifj74nzH6ww==/109951163561494000.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=536622304&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=536622304&key=579621905",
+    "time": 255
+    },
+    {
+    "id": "1334295185",
+    "name": "写给黄淮",
+    "singer": "解忧邵帅",
+    "pic": "http://p2.music.126.net/CG8hLG4To_TZum0rIGk7WA==/109951163764772334.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1334295185&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1334295185&key=579621905",
+    "time": 241
+    },
+    {
+    "id": "1341964346",
+    "name": "你的酒馆对我打了烊",
+    "singer": "陈雪凝",
+    "pic": "http://p2.music.126.net/LiRR__0pJHSivqBHZzbMUw==/109951163816225567.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1341964346&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1341964346&key=579621905",
+    "time": 251
+    },
+    {
+    "id": "536099160",
+    "name": "不染",
+    "singer": "毛不易",
+    "pic": "http://p1.music.126.net/gEia-o05FSas8uJos54Sug==/109951163456726954.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=536099160&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=536099160&key=579621905",
+    "time": 325
+    },
+    {
+    "id": "1325905146",
+    "name": "胡广生",
+    "singer": "任素汐",
+    "pic": "http://p1.music.126.net/fG0T1hnM9EEmkYSo4Ey97A==/109951163669946483.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=1325905146&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=1325905146&key=579621905",
+    "time": 214
+    },
+    {
+    "id": "480580003",
+    "name": "再也没有",
+    "singer": "永彬Ryan.B/AY楊佬叁",
+    "pic": "http://p1.music.126.net/B7MRU9cieODaInnwzyLwYQ==/18771962022944662.jpg?param=400y400",
+    "lrc": "https://api.bzqll.com/music/netease/lrc?id=480580003&key=579621905",
+    "url": "https://api.bzqll.com/music/netease/url?id=480580003&key=579621905",
+    "time": 212
+    }
+    ]
+    }
+    }

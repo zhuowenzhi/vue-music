@@ -39,7 +39,7 @@ export default {
       dialogVisible: false,
       currentTime: 0,
       playing: false,
-      audioSrc: ' http://music.163.com/song/media/outer/url?id=460578140',
+      audioSrc: 'http://music.163.com/song/media/outer/url?id=218153',
       imgUrl: 'http://img.hb.aicdn.com/22ded455284aab361b8d2056e82f74a891a019704296a-PSraEB_fw658" alt="',
       songName: '你离开的事实',
       singerName: 'zzz',

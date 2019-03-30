@@ -5,10 +5,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/icon/iconfont.css'
+import VueResource from 'vue-resource'
+import axios from 'axios'
+import VueBus from 'vue-bus'
 
 Vue.use(ElementUI)
+Vue.use(VueResource)
+Vue.use(VueBus)
+Vue.prototype.$axios = axios
+axios.defaults.headers.common['token'] = 'f4c902c9ae5a2a9d8f84868ad064e706'
+axios.defaults.headers.post['Content-type'] = 'application/json'
 Vue.config.productionTip = false
 
+Vue.prototype.Bus = new Vue()
 new Vue({
   router,
   store,
