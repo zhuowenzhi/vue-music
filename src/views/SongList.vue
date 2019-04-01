@@ -16,7 +16,7 @@
           </ul>
       </div>
       <div class="line"></div>
-      <Recommend :list="list"></Recommend>
+      <Recommend :list="list.slice((currentPage-1) * pageSize, currentPage * pageSize)"></Recommend>
       <div class="index-pagination">
         <el-pagination
         @size-change="handleSizeChange"
@@ -84,7 +84,6 @@ export default {
             type: res.data.payload[i].type,
             hot: res.data.payload[i].hot
           })
-        
         }
       }, function () {
         console.log('请求失败处理')
@@ -101,7 +100,7 @@ export default {
         }
       }).then(function (res) {
         console.log(res)
-         for (let i = 0; i < res.data.payload.list.length; i++) {
+        for (let i = 0; i < res.data.payload.list.length; i++) {
           _this.list.push({
             songlistid: res.data.payload.list[i].songlistid,
             number: i + 1,
@@ -111,10 +110,10 @@ export default {
             songlistplaycount: res.data.payload.list[i].songlistplaycount,
             emotionvalue: res.data.payload.list[i].emotionvalue,
             songlistdescription: res.data.payload.list[i].songlistdescription,
-            tagbody: res.data.payload.list[i].tagbody,
+            tagbody: res.data.payload.list[i].tagbody
           })
-          _this.currentPage = res.data.payload.currentPage,
-          _this.pageSize = res.data.payload.pageSize,
+          _this.currentPage = res.data.payload.currentPage
+          _this.pageSize = res.data.payload.pageSize
           _this.pageNum = res.data.payload.pageNum
         }
         _this.totalDataList = res.data.payload.total
@@ -131,6 +130,7 @@ export default {
     handleCurrentChange (currentPage) {
       var _this = this
       _this.pageNum = currentPage
+      _this.list = []
       _this.handlePageList()
     },
     handlePageList () {
@@ -143,7 +143,7 @@ export default {
           pageNum: _this.pageNum
         }
       }).then(function (res) {
-         for (let i = 0; i < res.data.payload.list.length; i++) {
+        for (let i = 0; i < res.data.payload.list.length; i++) {
           _this.list.push({
             songlistid: res.data.payload.list[i].songlistid,
             number: i + 1,
@@ -153,10 +153,10 @@ export default {
             songlistplaycount: res.data.payload.list[i].songlistplaycount,
             emotionvalue: res.data.payload.list[i].emotionvalue,
             songlistdescription: res.data.payload.list[i].songlistdescription,
-            tagbody: res.data.payload.list[i].tagbody,
+            tagbody: res.data.payload.list[i].tagbody
           })
-          _this.currentPage = res.data.payload.currentPage,
-          _this.pageSize = res.data.payload.pageSize,
+          _this.currentPage = res.data.payload.currentPage
+          _this.pageSize = res.data.payload.pageSize
           _this.pageNum = res.data.payload.pageNum
         }
         _this.totalDataList = res.data.payload.total

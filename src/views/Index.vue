@@ -53,7 +53,7 @@ export default {
       pageSize: 12,
       pageNum: 1,
       totalDataList: 0,
-      tagId:1
+      tagId: 1
     }
   },
   methods: {
@@ -66,7 +66,7 @@ export default {
           pageNum: _this.pageNum
         }
       }).then(function (res) {
-       console.log('热门推荐数据')
+        console.log('热门推荐数据')
       }, function () {
         console.log('请求失败处理')
       })
@@ -79,6 +79,7 @@ export default {
     handleCurrentChange (currentPage) {
       var _this = this
       _this.pageNum = currentPage
+      _this.list = []
       _this.handlePageList()
     },
     handlePageList () {
@@ -91,7 +92,7 @@ export default {
           pageNum: _this.pageNum
         }
       }).then(function (res) {
-         for (let i = 0; i < res.data.payload.list.length; i++) {
+        for (let i = 0; i < res.data.payload.list.length; i++) {
           _this.list.push({
             songlistid: res.data.payload.list[i].songlistid,
             number: i + 1,
@@ -101,10 +102,10 @@ export default {
             songlistplaycount: res.data.payload.list[i].songlistplaycount,
             emotionvalue: res.data.payload.list[i].emotionvalue,
             songlistdescription: res.data.payload.list[i].songlistdescription,
-            tagbody: res.data.payload.list[i].tagbody,
+            tagbody: res.data.payload.list[i].tagbody
           })
-          _this.currentPage = res.data.payload.currentPage,
-          _this.pageSize = res.data.payload.pageSize,
+          _this.pageSize = res.data.payload.pageSize
+          console.log(_this.pageSize)
           _this.pageNum = res.data.payload.pageNum
         }
         console.log(res.data.payload)

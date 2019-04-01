@@ -4,7 +4,7 @@
       <el-menu-item class="title"><i class="el-icon-upload"></i>云音乐</el-menu-item>
        <el-menu-item index="1" @click="() => this.$router.push('/')">发现音乐</el-menu-item>
         <el-menu-item index="1" @click="() => this.$router.push('/songlist')">歌单</el-menu-item>
-      <!-- <el-menu-item index="1" @click="() => this.$router.push('/mymusic')">我的音乐</el-menu-item> -->
+      <el-menu-item index="1" @click="() => this.$router.push('/mymusic')">我的音乐</el-menu-item>
       <el-menu-item @click="toSearch">
         <el-input
           placeholder="请输入内容"

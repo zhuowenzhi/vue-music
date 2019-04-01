@@ -50,9 +50,6 @@ export default {
             lrc: res.data.payload.list[i].lrc
           })
         }
-        console.log(_this.list)
-        console.log(_this.list.length)
-        console.log(_this.list.id)
       }, function () {
         console.log('请求失败处理')
       })
