@@ -3,25 +3,30 @@
     <div class="nav">
       <NavMenu></NavMenu>
     </div>
-   <div class="main">
-      <Swiper></Swiper>
-      <div class="recommend-title">
-        <h1>热门推荐</h1>
-        <!-- <a href="" @click="()=>{this.$router.push('/songlist')}">更多</a> -->
-      </div>
+  <div class="main">
+    <Swiper></Swiper>
+    <div class="recommend-title">
+      <h1>热门推荐</h1>
+      <!-- <a href="" @click="()=>{this.$router.push('/songlist')}">更多</a> -->
+    </div>
     <div class="line"></div>
-      <Recommend :list="list"></Recommend>
-      <div class="index-pagination">
-        <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :page-sizes="[5, 10, 20, 40]"
-        layout="total, prev, pager, next, jumper"
-        :total="totalDataList">
-        </el-pagination>
-      </div>
+    <Recommend :list="list"></Recommend>
+    <div class="index-pagination">
+      <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-size="pageSize"
+      :page-sizes="[5, 10, 20, 40]"
+      layout="total, prev, pager, next, jumper"
+      :total="totalDataList">
+      </el-pagination>
+    </div>
+    <div class="recommend-title">
+      <h1>热门歌曲</h1>
+    </div>
+    <div class="line"></div>
+    <!-- <SongTable :SongTableList="SongTableList"></SongTable> -->
    </div>
   </div>
 </template>
@@ -30,12 +35,14 @@
 import NavMenu from '../components/NavMenu.vue'
 import Swiper from '../components/Swiper.vue'
 import Recommend from '../components/Recommend.vue'
+import SongTable from '../components/SongTable.vue'
 export default {
   name: 'Index',
   components: {
     NavMenu,
     Swiper,
-    Recommend
+    Recommend,
+    SongTable
   },
   data () {
     return {
@@ -53,7 +60,8 @@ export default {
       pageSize: 12,
       pageNum: 1,
       totalDataList: 0,
-      tagId: 1
+      tagId: 1,
+      // SongTableList: []
     }
   },
   methods: {

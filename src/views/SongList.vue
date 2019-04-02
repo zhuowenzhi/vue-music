@@ -16,7 +16,7 @@
           </ul>
       </div>
       <div class="line"></div>
-      <Recommend :list="list.slice((currentPage-1) * pageSize, currentPage * pageSize)"></Recommend>
+      <Recommend :list="list"></Recommend>
       <div class="index-pagination">
         <el-pagination
         @size-change="handleSizeChange"

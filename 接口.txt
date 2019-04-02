@@ -1,0 +1,49 @@
+﻿localhost:8088/music/kd/getSongSheetByTagId?tagId=2&pageNum=1&pageSize=10  根据标签获取歌单分页列表 第pageNum页,每页有pageSize个
+
+localhost:8088/music/kd/getMusicSheetById?songlistId=2475637358&pageNum=1&pageSize=10     根据歌单id获取歌曲分页列表
+
+localhost:8088/music/kd/getSongById?songId=218153  获取单个歌曲
+
+localhost:8088/music/kd/getAllTag   获取所有标签
+
+localhost:8088/music/kd/getHotSongSheet?tagId=2&pageNum=1&pageSize=10   获取tagId=2下分页的热门歌单
+
+2019/04/02
+
+播放时候调用
+localhost:8088/music/kd/getSongById?userId=3&songId=1294968197
+
+获取单个歌单
+localhost:8088/music/kd/getSongListById?songListId=100334569
+
+搜索功能
+localhost:8088/music/kd/searchSong?songName=沙漠骆驼&userId=3  -- 当用户没有登录搜索时候，userId可以去掉
+
+用户点击喜欢时候调用
+localhost:8088/music/kd/setLikeSong?userId=3&songId=1294968197  -- 返回-1不予理会
+
+获取用户历史歌曲列表
+localhost:8088/music/kd/getHistorySongList?userId=3&pageNum=1&pageSize=10
+
+获取用户喜欢的歌曲列表
+localhost:8088/music/kd/getLikeSongList?userId=3&pageNum=1&pageSize=10
+
+登录接口 
+成功返回true，失败返回false | GET请求即可
+localhost:8088/music/user/login?userName=kd&password=pase  
+
+注册接口
+POST请求
+localhost:8088/music/user/createUser  
+{
+"name":"test",
+"password":"1235",
+"address":"广东汕头",
+"sex":"1"                    -- 男 1 女 0
+"picUrl":"localhost:8088/music/image/user.jpg"  --这个url固定即可
+}
+注册返回UserId
+
+
+获取用户个人信息
+localhost:8088/music/user/getUserInfo?userId=3

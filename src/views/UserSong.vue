@@ -15,13 +15,13 @@
                   <!-- <Dialog></Dialog> -->
                   <!-- <span>我喜欢的音乐</span> -->
                 </div>
-                <!-- <div class="main-right-songinfo--userinfo">
+                <div class="main-right-songinfo--userinfo">
                   <img src="http://img.hb.aicdn.com/60f788fc2a846192f224b9e6d4904b30e54926211d3d67-ACFJ9G_fw658" alt="">
                   <span>来那个天涯</span>
                   <span>2017-04-25创建</span>
-                </div> -->
+                </div>
                 <div>
-                  <!-- <el-button type="success" icon="el-icon-caret-right">播放</el-button> -->
+                  <el-button type="success" icon="el-icon-caret-right">播放</el-button>
                   <!-- <el-button type="info" icon="el-icon-tickets">信息按钮</el-button> -->
                 </div>
                 <div class="introduces" ref="desc"  :class="showTotal ? 'total-introduce' : 'detailed-introduce'">
@@ -37,49 +37,10 @@
              </div>
            </div>
            <h1>歌曲列表</h1>
-           <SongTable></SongTable>
-           <!-- <div class="index-pagination">
-              <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage"
-              :page-size="pageSize"
-              :page-sizes="[5, 10, 20, 40]"
-              layout="total, prev, pager, next, jumper"
-              :total="totalDataList">
-              </el-pagination>
-            </div> -->
-          <!-- <div class="audio">
-            <div class="audio-btns">
-                <span class="iconfont iconshangyishou" @click="prev()"></span>
-                <span class="iconfont" :class="iconPlay" @click="togglePlay()"></span>
-                <span class="iconfont iconxiayishou" @click="next()"></span>
-            </div>
-            <img class="audio-img" :src="imgUrl" alt="">
-            <div class="audio-play">
-                <div class="audio-play-info">
-                    <span class="song-name">{{ songName }}</span>
-                    <span class="singer-name">{{ singerName }}</span>
-                </div>
-                <div class="audio-play-bar"></div>
-            </div>
-            <div class="audio-time">
-                <span>00:00</span>
-                <span>/</span>
-                <span>00:00</span>
-            </div>
-            <div class="audio-flag">
-                <div class="iconfont iconshengyin"></div>
-                <div class="iconfont iconziyuanldpi"></div>
-                <div class="iconfont iconlist-2-copy"></div>
-            </div>
-            <audio ref="audio" id="audio" :src="audioSrc"></audio>
-          </div> -->
+           <SongTable :list="list"></SongTable>
         </div>
       </div>
-     <!-- <div class="my-audio">
-        <Audio></Audio>
-     </div> -->
+   
   </div>
 </template>
 
@@ -88,7 +49,7 @@ import NavMenu from '../components/NavMenu.vue'
 import SongTable from '../components/SongTable.vue'
 import Audio from '../components/Audio.vue'
 export default {
-  name: 'MyMusic',
+  name: 'UserSong',
   show: false,
   components: {
     NavMenu,
@@ -102,81 +63,12 @@ export default {
       exchangeButton: true,
       showExchangeButton: true,
       rem: '',
-      // currentPage: 1,
-      // page: 1,
-      // pageSize: 10,
-      // pageNum: 1,
-      // totalDataList: 0,
-      // songlistId: '',
-      // id: '',
-      // songid: '',
-      // name: '',
-      // singer: '',
-      // pic: '',
-      // url: '',
-      // time: '',
-      // lrc: '',
-      // list: [],
-      // iconPlay: 'iconbofang1',
-      // dialogVisible: false,
-      // currentTime: 0,
-      // playing: false,
-      // audioSrc: 'http://music.163.com/song/media/outer/url?id=218153',
-      // imgUrl: 'http://img.hb.aicdn.com/22ded455284aab361b8d2056e82f74a891a019704296a-PSraEB_fw658" alt="',
-      // songName: '你离开的事实',
-      // singerName: 'zzz',
-      // audio: {
-      //   currentTime: 0,
-      //   maxTime: 0,
-      //   playing: false,
-      //   muted: false,
-      //   speed: 1,
-      //   waiting: true,
-      //   preload: 'auto'
-      // },
-      // sliderTime: 0,
-      // volumeShow: false,
-      // sliderVolume: true,
-      // controlList: {
-      //   noDownload: true
-      // }
+      list: []
     }
   },
   computed: {
   },
   methods: {
-    // 播放、暂停方法
-    // togglePlay () {
-    //   if (!this.playing) {
-    //     this.iconPlay = 'iconbofang'
-    //     this.$refs.audio.play()
-    //     this.playing = !this.playing
-    //   } else {
-    //     this.iconPlay = 'iconbofang1'
-    //     this.$refs.audio.pause()
-    //     this.audio.currentTime = 0
-    //     this.playing = !this.playing
-    //   }
-    //   console.log(this.list)
-    // },
-    // // 歌曲切换上一首下一首
-    // pre () {
-    //   if (!this.songReady) {
-    //     return
-    //   }
-    //   let index = this.currentIndex - 1
-    //   if (index === -1) {
-    //     index = this.playList.length - 1
-    //   }
-    //   this.setCurrentIndex(index)
-    //   if (!this.playing) {
-    //     this.togglePlay () 
-    //   }
-    //   this.songReady = false
-    // },
-    // songUrl (url) {
-    //   this.audioSrc = url
-    // },
     showTotalIntro () {
       this.showTotal = !this.showTotal
       this.exchangeButton = !this.exchangeButton
@@ -189,50 +81,7 @@ export default {
       let rem = winWidth / 375 * defaultRem
       return rem
     },
-    // handleSizeChange (size) {
-    //   var _this = this
-    //   _this.pageSize = size
-    //   _this.handlePageList()
-    // },
-    // handleCurrentChange (currentPage) {
-    //   var _this = this
-    //   _this.pageNum = currentPage
-    //   _this.list = []
-    //   _this.handlePageList()
-    // },
-    // handlePageList () {
-    //   this.loading = true
-    //   var _this = this
-    //   _this.$axios.get('http://localhost:8088/music/kd/getMusicSheetById/', {
-    //     params: {
-    //       songlistId: _this.$route.params.songlistId,
-    //       pageSize: _this.pageSize + 2,
-    //       pageNum: _this.pageNum
-    //     }
-    //   }).then(function (res) {
-    //     for (let i = 0; i < res.data.payload.list.length; i++) {
-    //       _this.list.push({
-    //         id: res.data.payload.list[i].id,
-    //         number: i + 1,
-    //         name: res.data.payload.list[i].name,
-    //         songid: res.data.payload.list[i].songid,
-    //         singer: res.data.payload.list[i].singer,
-    //         pic: res.data.payload.list[i].pic,
-    //         url: res.data.payload.list[i].url,
-    //         time: res.data.payload.list[i].time,
-    //         lrc: res.data.payload.list[i].lrc,
-    //         currentPage: res.data.payload.currentPage,
-    //         pageSize: res.data.payload.pageSize,
-    //         pageNum: res.data.payload.pageNum
-    //       })
-    //     }
-    //     _this.totalDataList = res.data.payload.total
-    //     _this.pageNum = res.data.payload
-    //   })
-    // }
-  },
-  created () {
-    // this.handlePageList()
+  
   },
   watch: {
     currentSong(newSong, oldSong) {

@@ -51,7 +51,16 @@
               <span class="song-name">{{ songName }}</span>
               <span class="singer-name">{{ singerName }}</span>
           </div>
-          <div class="audio-play-bar"></div>
+          <!-- <div class="audio-play-bar">
+            <div class="progress-btn"></div>
+          </div> -->
+          <div class="bar">
+          <div class="progressbar" ref="runfatbar" @click="playMusic">
+            <div class="greenbar" ref="runbar">
+              <span class="yuan" draggable="true"></span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="audio-time">
           <span>{{ currentTime }}</span>
@@ -59,6 +68,7 @@
           <span>{{ totalTime }}</span>
       </div>
       <div class="audio-flag">
+          <div class="iconfont iconcollection"></div>
           <div class="iconfont iconshengyin"></div>
           <div class="iconfont iconziyuanldpi"></div>
           <div class="iconfont iconlist-2-copy"></div>
@@ -70,12 +80,18 @@
 </template>
 
 <script>
+
 export default {
   props: {},
   data () {
     return {
+      songReady: false,
+      currentLyric: null,
+      currentLineNum: 0,
+      currentShow: 'cd',
+      playingLyric: '',
       currentPage: 1,
-      page: 1,
+      // page: 1,
       pageSize: 10,
       pageNum: 1,
       totalDataList: 0,
@@ -94,14 +110,14 @@ export default {
       currentTime: '00:00',
       totalTime: '00:00',
       playing: false,
-      audioSrc: 'http://music.163.com/song/media/outer/url?id=218153',
+      audioSrc: ' http://music.163.com/song/media/outer/url?id=460578140',
       imgUrl: 'http://img.hb.aicdn.com/22ded455284aab361b8d2056e82f74a891a019704296a-PSraEB_fw658" alt="',
       songName: '你离开的事实',
       singerName: 'zzz',
       audio: {
         currentTime: 0,
         maxTime: 0,
-        playing: false,
+        // playing: false,
         muted: false,
         speed: 1,
         waiting: true,
@@ -112,12 +128,49 @@ export default {
       sliderVolume: true,
       controlList: {
         noDownload: true
+      },
+      currentIndex:''
+    }
+  },
+  watch: {
+    currentSong(newSong, oldSong) {
+      // 当列表没有歌曲时 直接return
+      if (!newSong.id) return
+
+      if (newSong === oldSong) {
+        return
       }
+
+      // 防止歌词切换跳动
+      if (this.currentLyric) {
+        this.currentLyric.stop()
+      }
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.$refs.audio.play()
+        this.getLyric()
+      }, 1000)
+    },
+    playing(newPlaying) {
+      const audio = this.$refs.audio
+      this.$nextTick(() => {
+        newPlaying ? audio.play() : audio.pause()
+      })
     }
   },
   methods: {
+    // initAudio () {
+    //   var _this = this
+    //   let arr = _this.list
+    //   console.log( _this.list)
+    //   console.log( arr[0])
+    //   _this.imgUrl = _this.list[0].pic
+    //   _this.singerName = _this.list[0].singer
+    //   _this.songName = _this.list[0].name
+    //   _this.totalTime = _this.list[0].time
+    //   _this.currentTime = _this.$refs.audio.currentTime
+    // },
     play (song) {
-      console.log(song)
       this.audioSrc = song.url
       this.imgUrl = song.pic
       this.singerName = song.singer
@@ -133,6 +186,52 @@ export default {
         this.$refs.audio.pause()
         this.audio.currentTime = 0
         this.playing = !this.playing
+      }
+    },
+    prev() {
+      if (!this.songReady) {
+        return
+      }
+      if (this.list.length === 1) {
+        this.loop()
+      } else {
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.list.length - 1
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlay()
+        }
+      }
+      this.songReady = false
+    },
+    next() {
+      if (!this.songReady) {
+        return
+      }
+      // 列表只有一首歌曲则单曲循环
+      if (this.list.length === 1) {
+        this.loop()
+      } else {
+        let index = this.currentIndex + 1
+        if (index === this.list.length) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlay()
+        }
+      }
+      this.songReady = false
+    },
+    loop() {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+
+      // 循环播放 歌词回到开始的时候
+      if (this.currentLyric) {
+        this.currentLyric.seek(0)
       }
     },
     togglePlay () {
@@ -170,22 +269,6 @@ export default {
       const self = this
       self.timeDuration =  parseInt(self.$refs.audio.duration)
       console.log(self.timeDuration)
-    },
-
-    // 歌曲切换上一首下一首
-    pre () {
-      if (!this.songReady) {
-        return
-      }
-      let index = this.currentIndex - 1
-      if (index === -1) {
-        index = this.playList.length - 1
-      }
-      this.setCurrentIndex(index)
-      if (!this.playing) {
-        this.togglePlay () 
-      }
-      this.songReady = false
     },
     handleSizeChange (size) {
       var _this = this
@@ -226,14 +309,82 @@ export default {
         }
         _this.totalDataList = res.data.payload.total
         _this.pageNum = res.data.payload
+        // _this.list = JSON.parse(JSON.stringify( _this.list))
       })
     },
+    // 点击进度条事件
+    playMusic(e){
+      const music = this.$refs.audio // 音频所在对象
+      const barWidth = e.pageX / this.$refs.runfatbar.offsetWidth // 计算点击位置相对父元素总宽的比例
+      this.$refs.runbar.style.width = `${barWidth * 100}%` // 进度条应所在的比例总宽
+      music.currentTime = music.duration * barWidth // 计算点击时应播放所在的时间
+      music.play(); // 播放音频
+      this.play = true; // 更改播放暂停按钮为播放
+    }
   },
   created () {
     this.handlePageList()
   },
   mounted () {
     this.addEventListeners()
+    // this. initAudio()
+    const music = this.$refs.audio  // 音频所在对象
+    const musicBar = this.$refs.runbar  // 颜色进度条所在对象
+    const musicWidth = this.$refs.runfatbar.offsetWidth // 底部进度条总宽
+    console.log(this.$refs.audio)
+    console.log(this.$refs.runbar)
+    console.log(this.$refs.runfatbar.offsetWidth)
+    // 初始化音频信息
+    music.addEventListener('canplay', () => {
+      const musicTime = music.duration; // 获得音频时长
+      const branch = Math.floor(musicTime / 60); // 计算音频分钟
+      const second = Math.ceil(musicTime % 60); // 计算音频秒
+
+      if(branch < 10 && second < 10){  // 四种情况判断音频总时间
+        this.dTime = `0${branch}:0${second}`
+      }else if(branch < 10){
+        this.dTime = `0${branch}:${second}`
+      }else if(second < 10){
+        this.dTime = `${branch}:0${second}`
+      }else{
+        this.dTime = `${branch}:${second}`
+      }
+    })
+
+    // 音频正在播放
+    music.addEventListener('timeupdate',() => {
+      const musicTime = music.duration // 获得音频时长
+      const stopTime = music.currentTime // 获得已播放的音频时长
+
+      musicBar.style.width = `${(stopTime / musicTime) * 100}%` // 计算进度条所在比例宽度
+      const branch = Math.floor(stopTime / 60) // 计算已播放的音频分钟
+      const second = Math.floor(stopTime % 60) // 计算已播放的音频秒
+
+      if (branch < 10 && second < 10) { // 四种情况判断显示音频以播放时间
+        this.cTime = `0${branch}:0${second}`
+      } else if (branch < 10) {
+        this.cTime = `0${branch}:${second}`
+      } else if (second < 10) {
+        this.cTime = `${branch}:0${second}`
+      } else {
+        this.cTime = `${branch}:${second}`
+      }
+    })
+
+    // 移动端监听进度条触摸拖动
+    musicBar.addEventListener('touchmove',(event) => {
+      const events = event.targetTouches[0].pageX // 获得触摸拖动的距离
+      musicBar.style.width = `${(events / musicWidth) * 100}%` // 计算进度条所在比例宽度
+      music.pause(); // 触摸拖动时停止播放
+    })
+
+    // 移动端监听进度条触摸拖动结束
+    musicBar.addEventListener('touchend',() => {
+      const touwidth = (musicBar.offsetWidth / musicWidth) // 计算进度条所在比例
+      music.currentTime = music.duration * touwidth // 通过所在比例赋值给音频应在的播放时间
+      music.play() // 根据播放时间开始播放
+      this.play = true // 更改播放暂停按钮为播放
+    })
   },
   beforeDestroyed() {
     this.removeEventListeners()
@@ -294,5 +445,47 @@ export default {
 .singer-name {
     font-size: 14px;
     color: #ccc;
+}
+.progress-btn {
+    position : relative;
+    top: -0.18rem;
+    box-sizing : border-box;
+    width : 1rem;
+    height : 1rem;
+    border : 0.06rem solid #ccc;
+    border-radius : 50%;
+    background :  #fff;
+}
+
+.bar{
+    width:100%;
+    height:30px;
+    line-height:30px;
+}
+.bar .progressbar{
+    width: 100%;
+    height:10px;
+    background-color: #999999;
+    margin-top:10px;
+    border-radius:30px;
+    position: relative;
+}
+.bar .greenbar {
+    width: 0%;
+    height:10px;
+    border-radius:30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+}
+.bar .greenbar .yuan{
+    display: inline-block;
+    background-color: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+}
+.iconcollection {
+  color: red;
 }
 </style>

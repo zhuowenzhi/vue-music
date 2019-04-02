@@ -33,6 +33,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "search" */ './views/Search.vue')
     },
     {
+      path: '/usersong',
+      name: 'UserSong',
+      component: () => import(/* webpackChunkName: "usersong" */ './views/UserSong.vue')
+    },
+    {
       path: '/playlist',
       name: 'PlayList',
       // route level code-splitting

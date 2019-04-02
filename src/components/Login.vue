@@ -1,7 +1,10 @@
 <template>
   <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-    <el-form-item prop="phone">
+    <!-- <el-form-item prop="phone">
       <el-input v-model="form.phone" maxlength="11" placeholder="手机号码"></el-input>
+    </el-form-item> -->
+    <el-form-item prop="name">
+      <el-input v-model="form.name" placeholder="请输入昵称"></el-input>
     </el-form-item>
      <el-form-item prop="password">
       <el-input type="password" v-model="form.password" placeholder="密码"></el-input>
@@ -40,6 +43,7 @@ export default {
     return {
       form: {
         phone: '',
+        name: '',
         password: '',
         verifycode: ''
       },
@@ -89,17 +93,28 @@ export default {
   },
   methods: {
     login () {
-      if (localStorage.getItem('phone') === this.form.phone && localStorage.getItem('password') === this.form.password) {
-        this.$router.push({ name: 'home' })
-      } else if (this.identifyCode !== this.verifycode) {
-        this.$message('验证码错误')
-      } else if (this.form.phone === '') {
-        this.$message('电话不能为空')
-      } else if (this.form.password === '') {
-        this.$message('密码不能为空')
-      } else {
-        this.$message('请检查用户名或者密码是否正确')
+      var _this = this
+      _this.$axios.get('http://localhost:8088/music/user/login/', {
+      params: {
+        userName: _this.form.name,
+        password: _this.form.password
       }
+      }).then(function (res) {
+        console.log(res)
+        //  if (localStorage.getItem('phone') === this.form.phone && localStorage.getItem('password') === this.form.password) {
+        //   this.$router.push({ name: 'home' })
+        // } else if (this.identifyCode !== this.verifycode) {
+        //   this.$message('验证码错误')
+        // } else if (this.form.phone === '') {
+        //   this.$message('电话不能为空')
+        // } else if (this.form.password === '') {
+        //   this.$message('密码不能为空')
+        // } else {
+        //   this.$message('请检查用户名或者密码是否正确')
+        // }
+      }).catch(function (error) {
+        console.log(error)
+      })
     },
 
     // 生成随机数

@@ -2,10 +2,29 @@
 
   <el-form ref="form" :rules="rules" :model="form" label-width="80px">
 
-    <el-form-item  prop="phone">
+    <!-- <el-form-item  prop="phone">
       <el-input v-model="form.phone" maxlength="11" placeholder="手机号码"></el-input>
+    </el-form-item> -->
+     <el-form-item  prop="sex">
+      <el-radio v-model="form.sex" label="1">男</el-radio>
+      <el-radio v-model="form.sex" label="0">女</el-radio>
     </el-form-item>
 
+     <el-form-item  prop="name">
+      <el-input v-model="form.name" maxlength="11" placeholder="输入昵称"></el-input>
+    </el-form-item>
+
+    
+     <el-form-item  prop="address">
+      <el-input v-model="form.address" placeholder="地址(如广东湛江)"></el-input>
+    </el-form-item>
+
+<!--     
+     <el-form-item  prop="sex">
+      <el-input v-model="form.sex" maxlength="1" placeholder="性别"></el-input>
+    </el-form-item> -->
+   
+ 
      <el-form-item prop="password">
       <el-input type="password" v-model="form.password" placeholder="密码"></el-input>
     </el-form-item>
@@ -43,9 +62,12 @@ export default {
   data () {
     return {
       form: {
-        phone: '',
+        // phone: '',
         password: '',
-        passwordRepeat: ''
+        passwordRepeat: '',
+        name: '',
+        address: '',
+        sex: '1'
       },
       identifyCodes: '1234567890',
       identifyCode: '',
@@ -81,7 +103,7 @@ export default {
         ],
         verifycode: [
           {
-            required: true,
+            // required: true,
             trigger: 'blur'
           }
         ]
@@ -92,20 +114,41 @@ export default {
     this.refreshCode()
   },
   methods: {
+    // 用户注册请求接口
     register () {
-      if (this.identifyCode !== this.verifycode) {
-        this.$message('验证码错误')
-      } else if (this.form.phone === '') {
-        this.$message('电话不能为空')
-      } else if (this.form.password === '') {
-        this.$message('密码不能为空')
-      } else if (this.form.password !== this.form.passwordRepeat) {
-        this.$message('两次输入的密码不一致')
-      } else {
-        localStorage.setItem('phone', this.form.phone)
-        localStorage.setItem('password', this.form.password)
-        this.$router.push({ name: 'home' })
+      var _this = this
+      _this.$axios.get('http://localhost:8088/music/user/createUser/', {
+      // headers:{
+      //   'Content-type': 'application/json'
+      // },
+      params: {
+        name: _this.form.name,
+        password: _this.form.password,
+        address: _this.form.address,
+        sex: _this.form.sex,
+        picUrl:'123'
       }
+      }).then(function (res) {
+      console.log(res)
+      var _this = this
+      if (_this.identifyCode !== _this.verifycode) {
+          _this.$message('验证码错误')
+        } 
+        //   else if (this.form.phone === '') {
+        //   this.$message('电话不能为空')
+        // } 
+        else if (_this.form.password === '') {
+          _this.$message('密码不能为空')
+        } else if (_this.form.password !== _this.form.passwordRepeat) {
+          _this.$message('两次输入的密码不一致')
+        } else {
+          localStorage.setItem('name', _this.form.name)
+          localStorage.setItem('password', _this.form.password)
+          _this.$router.push({ name: 'home' })
+        }
+      }).catch(function (error) {
+        console.log(error)
+      })
     },
     // 生成随机数
     randomNum (min, max) {
