@@ -1,15 +1,15 @@
 <template>
   <div class="nav">
-    <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
+    <el-menu class="el-menu-demo" mode="horizontal">
       <el-menu-item class="title"><i class="el-icon-upload"></i>云音乐</el-menu-item>
        <el-menu-item index="1" @click="() => this.$router.push('/')">发现音乐</el-menu-item>
         <el-menu-item index="1" @click="() => this.$router.push('/songlist')">歌单</el-menu-item>
       <el-menu-item index="1" @click="() => this.$router.push('/mymusic')">我的音乐</el-menu-item>
-      <el-menu-item>
+      <el-menu-item @click="toSearch">
         <el-input
           placeholder="请输入内容"
           prefix-icon="el-icon-search"
-          @keyup.enter="toSearch()">
+         >
         </el-input>
       </el-menu-item>
     </el-menu>
@@ -29,12 +29,8 @@ export default {
     }
   },
   methods: {
-    handleSelect (key, keyPath) {
-      console.log(key, keyPath)
-    },
     toSearch () {
-      console.log('跳转到搜索页')
-      this.$router.push({ name: 'search' })
+      this.$router.push('/search')
     }
   }
 }

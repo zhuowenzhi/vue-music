@@ -10,10 +10,17 @@
         <!-- <a href="" @click="()=>{this.$router.push('/songlist')}">更多</a> -->
       </div>
     <div class="line"></div>
-      <Recommend></Recommend>
-      <div class="indexSong">
-        <h1>榜单</h1>
-        <SongTable></SongTable>
+      <Recommend :list="list"></Recommend>
+      <div class="index-pagination">
+        <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :page-sizes="[5, 10, 20, 40]"
+        layout="total, prev, pager, next, jumper"
+        :total="totalDataList">
+        </el-pagination>
       </div>
    </div>
   </div>
@@ -23,14 +30,98 @@
 import NavMenu from '../components/NavMenu.vue'
 import Swiper from '../components/Swiper.vue'
 import Recommend from '../components/Recommend.vue'
-import SongTable from '../components/SongTable.vue'
 export default {
   name: 'Index',
   components: {
     NavMenu,
     Swiper,
-    Recommend,
-    SongTable
+    Recommend
+  },
+  data () {
+    return {
+      songlistid: '',
+      songlistname: '',
+      songlistpic: '',
+      songlistcount: '',
+      songlistplaycount: '',
+      emotionvalue: '',
+      songlistdescription: '',
+      tagbody: '',
+      list: [],
+      currentPage: 1,
+      page: 1,
+      pageSize: 12,
+      pageNum: 1,
+      totalDataList: 0,
+      tagId: 1
+    }
+  },
+  methods: {
+    get () {
+      var _this = this
+      _this.$axios.get('http://localhost:8088/music/kd/getSongSheetByTagId/', {
+        params: {
+          tagId: _this.tagId,
+          pageSize: _this.pageSize,
+          pageNum: _this.pageNum
+        }
+      }).then(function (res) {
+        console.log('热门推荐数据')
+      }, function () {
+        console.log('请求失败处理')
+      })
+    },
+    handleSizeChange (size) {
+      var _this = this
+      _this.pageSize = size
+      _this.handlePageList()
+    },
+    handleCurrentChange (currentPage) {
+      var _this = this
+      _this.pageNum = currentPage
+      _this.list = []
+      _this.handlePageList()
+    },
+    handlePageList () {
+      this.loading = true
+      var _this = this
+      _this.$axios.get('http://localhost:8088/music/kd/getSongSheetByTagId/', {
+        params: {
+          tagId: 2,
+          pageSize: _this.pageSize,
+          pageNum: _this.pageNum
+        }
+      }).then(function (res) {
+        for (let i = 0; i < res.data.payload.list.length; i++) {
+          _this.list.push({
+            songlistid: res.data.payload.list[i].songlistid,
+            number: i + 1,
+            songlistname: res.data.payload.list[i].songlistname,
+            songlistpic: res.data.payload.list[i].songlistpic,
+            songlistcount: res.data.payload.list[i].songlistcount,
+            songlistplaycount: res.data.payload.list[i].songlistplaycount,
+            emotionvalue: res.data.payload.list[i].emotionvalue,
+            songlistdescription: res.data.payload.list[i].songlistdescription,
+            tagbody: res.data.payload.list[i].tagbody
+          })
+          _this.pageSize = res.data.payload.pageSize
+          console.log(_this.pageSize)
+          _this.pageNum = res.data.payload.pageNum
+        }
+        console.log(res.data.payload)
+        _this.totalDataList = res.data.payload.total
+      }).catch(function (error) {
+        console.log(error)
+      })
+    }
+  },
+  created () {
+    this.handlePageList()
+  },
+  mounted () {
+    this.get()
+  },
+  computed: {
   }
 }
 </script>
@@ -73,5 +164,9 @@ a {
 .indexSong h1 {
   border-bottom: 2px red solid;
   padding-bottom: 20px;
+}
+.index-pagination {
+    width: 200px;
+    margin: 0 auto;
 }
 </style>
