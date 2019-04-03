@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers';
 
 export default {
   props: {},
@@ -110,10 +111,10 @@ export default {
       currentTime: '00:00',
       totalTime: '00:00',
       playing: false,
-      audioSrc: ' http://music.163.com/song/media/outer/url?id=460578140',
-      imgUrl: 'http://img.hb.aicdn.com/22ded455284aab361b8d2056e82f74a891a019704296a-PSraEB_fw658" alt="',
-      songName: '你离开的事实',
-      singerName: 'zzz',
+      audioSrc: ' ',
+      imgUrl: '',
+      songName: '',
+      singerName: '',
       audio: {
         currentTime: 0,
         maxTime: 0,
@@ -159,17 +160,17 @@ export default {
     }
   },
   methods: {
-    // initAudio () {
-    //   var _this = this
-    //   let arr = _this.list
-    //   console.log( _this.list)
-    //   console.log( arr[0])
-    //   _this.imgUrl = _this.list[0].pic
-    //   _this.singerName = _this.list[0].singer
-    //   _this.songName = _this.list[0].name
-    //   _this.totalTime = _this.list[0].time
-    //   _this.currentTime = _this.$refs.audio.currentTime
-    // },
+    initAudio () {
+      var _this = this
+      setTimeout( ()=> {
+        _this.imgUrl = _this.list[0].pic
+        _this.singerName = _this.list[0].singer
+        _this.songName = _this.list[0].name
+        _this.totalTime = _this.list[0].time
+        _this.currentTime = _this.$refs.audio.currentTime
+        _this.audioSrc =  _this.list[0].url
+      }, 1000)
+    },
     play (song) {
       this.audioSrc = song.url
       this.imgUrl = song.pic
@@ -327,7 +328,7 @@ export default {
   },
   mounted () {
     this.addEventListeners()
-    // this. initAudio()
+    this. initAudio()
     const music = this.$refs.audio  // 音频所在对象
     const musicBar = this.$refs.runbar  // 颜色进度条所在对象
     const musicWidth = this.$refs.runfatbar.offsetWidth // 底部进度条总宽
