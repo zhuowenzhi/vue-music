@@ -7,24 +7,24 @@
         <!-- <Aside></Aside> -->
          <div class="main-right">
            <div class="main-right-songinfo">
-             <img src="http://img.hb.aicdn.com/60f788fc2a846192f224b9e6d4904b30e54926211d3d67-ACFJ9G_fw658" alt="">
+             <img :src="pic_url" alt="">
              <div class="main-right-songinfo-right">
                 <div class="main-right-songinfo-listname">
                   <el-button type="danger">歌单</el-button>
-                  <div class="song-list-name">孤独的</div>
+                  <div class="song-list-name">收藏的歌曲</div>
                   <!-- <Dialog></Dialog> -->
                   <!-- <span>我喜欢的音乐</span> -->
                 </div>
                 <div class="main-right-songinfo--userinfo">
-                  <img src="http://img.hb.aicdn.com/60f788fc2a846192f224b9e6d4904b30e54926211d3d67-ACFJ9G_fw658" alt="">
-                  <span>来那个天涯</span>
-                  <span>2017-04-25创建</span>
+                  <img :src="pic_url" alt="">
+                  <span>{{name}}</span>
+                  <!-- <span>2017-04-25创建</span> -->
                 </div>
                 <div>
                   <el-button type="success" icon="el-icon-caret-right">播放</el-button>
                   <!-- <el-button type="info" icon="el-icon-tickets">信息按钮</el-button> -->
                 </div>
-                <div class="introduces" ref="desc"  :class="showTotal ? 'total-introduce' : 'detailed-introduce'">
+                <!-- <div class="introduces" ref="desc"  :class="showTotal ? 'total-introduce' : 'detailed-introduce'">
                   <div class="intro-content" :title="introduce" ref="desc">
                     <span class="merchant-desc" v-if="introduce">
                       {{introduce}}
@@ -33,11 +33,11 @@
                       <p>{{exchangeButton ? '展开' : '收起'}}</p>
                     </div>
                   </div>
-                </div>
+                </div> -->
              </div>
            </div>
-           <h1>歌曲列表</h1>
-           <SongTable :list="list"></SongTable>
+           <h1>收藏的歌曲</h1>
+           <LikeSong></LikeSong>
         </div>
       </div>
    
@@ -46,14 +46,14 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-import SongTable from '../components/SongTable.vue'
+import LikeSong from '../components/LikeSong.vue'
 import Audio from '../components/Audio.vue'
 export default {
   name: 'UserSong',
   show: false,
   components: {
     NavMenu,
-    SongTable,
+    LikeSong,
     Audio
   },
   data () {
@@ -63,7 +63,9 @@ export default {
       exchangeButton: true,
       showExchangeButton: true,
       rem: '',
-      list: []
+      list: [],
+      name:'',
+      pic_url: 'http://localhost:8088/music/image/user.jpg'
     }
   },
   computed: {
@@ -81,7 +83,12 @@ export default {
       let rem = winWidth / 375 * defaultRem
       return rem
     },
-  
+    getUSerInfo () {
+      this.name = this.$cookieStore.getCookie('name')
+    }
+  },
+  created () {
+    this.getUSerInfo()
   },
   watch: {
     currentSong(newSong, oldSong) {

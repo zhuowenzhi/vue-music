@@ -100,6 +100,7 @@ export default {
         }
       }).then(function (res) {
         console.log(res)
+         _this.list = []
         for (let i = 0; i < res.data.payload.list.length; i++) {
           _this.list.push({
             songlistid: res.data.payload.list[i].songlistid,
@@ -125,6 +126,7 @@ export default {
     handleSizeChange (size) {
       var _this = this
       _this.pageSize = size
+      _this.list = []
       _this.handlePageList()
     },
     handleCurrentChange (currentPage) {

@@ -7,24 +7,24 @@
         <!-- <Aside></Aside> -->
          <div class="main-right">
            <div class="main-right-songinfo">
-             <img :src="songlistpic">
+             <img :src="pic_url" alt="">
              <div class="main-right-songinfo-right">
                 <div class="main-right-songinfo-listname">
                   <el-button type="danger">歌单</el-button>
-                  <div class="song-list-name">{{songlistname}}</div>
+                  <div class="song-list-name">历史听歌记录</div>
                   <!-- <Dialog></Dialog> -->
                   <!-- <span>我喜欢的音乐</span> -->
                 </div>
-                <!-- <div class="main-right-songinfo--userinfo">
-                  <img src="http://img.hb.aicdn.com/60f788fc2a846192f224b9e6d4904b30e54926211d3d67-ACFJ9G_fw658" alt="">
-                  <span>来那个天涯</span>
-                  <span>2017-04-25创建</span>
-                </div> -->
+                <div class="main-right-songinfo--userinfo">
+                  <img :src="pic_url">
+                  <span>{{name}}</span>
+                  <!-- <span>2017-04-25创建</span> -->
+                </div>
                 <div>
-                  <!-- <el-button type="success" icon="el-icon-caret-right">播放</el-button> -->
+                  <el-button type="success" icon="el-icon-caret-right">播放</el-button>
                   <!-- <el-button type="info" icon="el-icon-tickets">信息按钮</el-button> -->
                 </div>
-                <div class="introduces" ref="desc"  :class="showTotal ? 'total-introduce' : 'detailed-introduce'">
+                <!-- <div class="introduces" ref="desc"  :class="showTotal ? 'total-introduce' : 'detailed-introduce'">
                   <div class="intro-content" :title="introduce" ref="desc">
                     <span class="merchant-desc" v-if="introduce">
                       {{introduce}}
@@ -33,63 +33,44 @@
                       <p>{{exchangeButton ? '展开' : '收起'}}</p>
                     </div>
                   </div>
-                </div>
+                </div> -->
              </div>
            </div>
-           <h1>歌曲列表</h1>
-           <SongTable></SongTable>
-
+           <h1>历史歌曲</h1>
+           <HistorySong></HistorySong>
         </div>
       </div>
+   
   </div>
 </template>
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-import SongTable from '../components/SongTable.vue'
 import Audio from '../components/Audio.vue'
-import { setTimeout } from 'timers'
+import HistorySong from '../components/HistorySong.vue'
 export default {
-  name: 'MyMusic',
+  name: 'UserSong',
   show: false,
   components: {
     NavMenu,
-    SongTable,
-    Audio
+    Audio,
+    HistorySong
   },
   data () {
     return {
-      introduce: '',
+      introduce: '拥有财富、名声、权力，这世界上的一切的男人--哥尔·D·罗杰，在被行刑受死之前说了一句话，让全世界的人都涌向了大海。“想要我的宝藏吗？如果想要的话，那就到海上去找吧，我全部都放在那里。”，世界开始迎接“大海贼时代”的来临。拥有财富、名声、权力，这世界上的一切的男人 “海贼王”哥尔·D·罗杰，在被行刑受死之前说了一句话，让全世界的人都涌向了大海。“想要我的宝藏吗？如果想要的话，那就到海上去找吧，我全部都放在那里。”，世界开始迎接“大海贼时代”的来临。',
       showTotal: false,
       exchangeButton: true,
       showExchangeButton: true,
       rem: '',
-      songlistpic: '',
-      songlistname: ''
+      list: [],
+      name:'',
+      pic_url: 'http://localhost:8088/music/image/user.jpg',
     }
   },
   computed: {
   },
   methods: {
-    getSongListInfo () {
-      setTimeout(() => {
-        var _this = this
-       _this.$axios.get('http://localhost:8088/music/kd/getSongListById/', {
-        params: {
-          songListId: _this.$route.query.songlistId,
-          userId: _this.$cookieStore.getCookie('userId')
-        }
-      }).then(function (res) {
-        console.log(res)
-        _this.introduce = res.data.payload.songlistdescription
-        _this.songlistpic = res.data.payload.songlistpic
-        _this.songlistname = res.data.payload.songlistname
-        _this. introduce()
-      }).catch(function (error) {
-        console.log(error)
-      })
-      },1000)
-    },
     showTotalIntro () {
       this.showTotal = !this.showTotal
       this.exchangeButton = !this.exchangeButton
@@ -102,14 +83,12 @@ export default {
       let rem = winWidth / 375 * defaultRem
       return rem
     },
-    getParams () {
-      console.log(this.$route.query.songlistId)
+    getUSerInfo () {
+      this.name = this.$cookieStore.getCookie('name')
     }
   },
   created () {
-    // this.handlePageList()
-    this.getParams()
-    this.getSongListInfo ()
+    this.getUSerInfo()
   },
   watch: {
     currentSong(newSong, oldSong) {
@@ -119,9 +98,8 @@ export default {
         }
       })
     },
-    introduce () {
-      setTimeout (() => {
-        this.$nextTick(function () {
+    'introduce': function () {
+      this.$nextTick(function () {
         console.log('nextTick')
         // 判断介绍是否超过四行
         let rem = parseFloat(this.getRem())
@@ -149,7 +127,6 @@ export default {
           console.log('showTotal', this.showTotal)
         }
       }.bind(this))
-       },2000)
     }
   }
 }

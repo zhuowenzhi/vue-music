@@ -22,10 +22,10 @@
       :total="totalDataList">
       </el-pagination>
     </div>
-    <div class="recommend-title">
+    <!-- <div class="recommend-title">
       <h1>热门歌曲</h1>
     </div>
-    <div class="line"></div>
+    <div class="line"></div> -->
     <!-- <SongTable :SongTableList="SongTableList"></SongTable> -->
    </div>
   </div>
@@ -35,14 +35,14 @@
 import NavMenu from '../components/NavMenu.vue'
 import Swiper from '../components/Swiper.vue'
 import Recommend from '../components/Recommend.vue'
-import SongTable from '../components/SongTable.vue'
+// import SongTable from '../components/SongTable.vue'
 export default {
   name: 'Index',
   components: {
     NavMenu,
     Swiper,
-    Recommend,
-    SongTable
+    Recommend
+    // SongTable
   },
   data () {
     return {

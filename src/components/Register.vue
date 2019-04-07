@@ -103,7 +103,7 @@ export default {
         ],
         verifycode: [
           {
-            // required: true,
+            required: true,
             trigger: 'blur'
           }
         ]
@@ -117,38 +117,37 @@ export default {
     // 用户注册请求接口
     register () {
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/user/createUser/', {
-      // headers:{
-      //   'Content-type': 'application/json'
-      // },
-      params: {
-        name: _this.form.name,
-        password: _this.form.password,
-        address: _this.form.address,
-        sex: _this.form.sex,
-        picUrl:'123'
-      }
-      }).then(function (res) {
-      console.log(res)
-      var _this = this
-      if (_this.identifyCode !== _this.verifycode) {
-          _this.$message('验证码错误')
-        } 
-        //   else if (this.form.phone === '') {
-        //   this.$message('电话不能为空')
-        // } 
-        else if (_this.form.password === '') {
-          _this.$message('密码不能为空')
-        } else if (_this.form.password !== _this.form.passwordRepeat) {
-          _this.$message('两次输入的密码不一致')
-        } else {
-          localStorage.setItem('name', _this.form.name)
-          localStorage.setItem('password', _this.form.password)
-          _this.$router.push({ name: 'home' })
+      if (_this.form.name === '') {
+        _this.$message('昵称不能为空')
+      } else if (_this.form.address === '') {
+        _this.$message('地址不能为空')
+      } else if (_this.form.password === '') {
+        _this.$message('密码不能为空')
+      } else if (_this.form.password !== _this.form.passwordRepeat) {
+        _this.$message('两次输入的密码不一致')
+      } else if (_this.identifyCode !== _this.verifycode) {
+        _this.$message('验证码错误')
+      } else {
+        _this.$axios.get('http://localhost:8088/music/user/createUser/', {
+        params: {
+          name: _this.form.name,
+          password: _this.form.password,
+          address: _this.form.address,
+          sex: _this.form.sex,
+          picUrl:'123'
         }
-      }).catch(function (error) {
-        console.log(error)
-      })
+        }).then(function (res) {
+            // localStorage.setItem('name', _this.form.name)
+            // localStorage.setItem('userId', res.data.payload)
+            // localStorage.setItem('password', _this.form.password)
+            _this.$cookieStore.setCookie( 'userId' , res.data.payload,9999999960)
+            _this.$cookieStore.setCookie( 'name' ,_this.form.name,9999999960)
+            _this.$cookieStore.setCookie( 'password' ,_this.form.password,9999999960)
+            _this.$router.push('/')
+        }).catch(function (error) {
+          console.log(error)
+        })
+      }
     },
     // 生成随机数
     randomNum (min, max) {

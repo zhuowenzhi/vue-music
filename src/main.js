@@ -8,6 +8,7 @@ import './assets/icon/iconfont.css'
 import VueResource from 'vue-resource'
 import axios from 'axios'
 import VueBus from 'vue-bus'
+import { setCookie, getCookie, delCookie } from './util/util.js'
 
 Vue.use(ElementUI)
 Vue.use(VueResource)
@@ -18,6 +19,12 @@ axios.defaults.headers.post['Content-type'] = 'application/json'
 Vue.config.productionTip = false
 
 Vue.prototype.Bus = new Vue()
+Vue.prototype.$cookieStore = {
+  setCookie,
+  getCookie,
+  delCookie
+}
+
 new Vue({
   router,
   store,

@@ -22,6 +22,11 @@ export default new Router({
       name: 'LoginPage',
       component: () => import(/* webpackChunkName: "login" */ './views/LoginPage.vue')
     },
+    // {
+    //   path: '/components/login',
+    //   name: 'login',
+    //   component: Login
+    // },
     {
       path: '/songlist',
       name: 'SongList',
@@ -33,9 +38,14 @@ export default new Router({
       component: () => import(/* webpackChunkName: "search" */ './views/Search.vue')
     },
     {
-      path: '/usersong',
-      name: 'UserSong',
-      component: () => import(/* webpackChunkName: "usersong" */ './views/UserSong.vue')
+      path: '/userhistory',
+      name: 'UserHistory',
+      component: () => import(/* webpackChunkName: "usersong" */ './views/UserHistory.vue')
+    },
+    {
+      path: '/userlike',
+      name: 'UserLike',
+      component: () => import(/* webpackChunkName: "userlike" */ './views/UserLike.vue')
     },
     {
       path: '/playlist',
