@@ -38,7 +38,7 @@ export default {
   methods: {
     getId (songlistid) {
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/kd/getMusicSheetById', {
+      _this.$axios.get(this.baseUrl + 'kd/getMusicSheetById', {
         params: {
           songlistId: songlistid,
           pageSize: _this.pageSize,

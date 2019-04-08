@@ -74,7 +74,7 @@ export default {
     getSongListInfo () {
       setTimeout(() => {
         var _this = this
-       _this.$axios.get('http://localhost:8088/music/kd/getSongListById/', {
+       _this.$axios.get(this.baseUrl+ 'kd/getSongListById/', {
         params: {
           songListId: _this.$route.query.songlistId,
           userId: _this.$cookieStore.getCookie('userId')

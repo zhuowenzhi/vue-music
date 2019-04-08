@@ -22,11 +22,11 @@
       :total="totalDataList">
       </el-pagination>
     </div>
-    <!-- <div class="recommend-title">
+    <div class="recommend-title">
       <h1>热门歌曲</h1>
     </div>
-    <div class="line"></div> -->
-    <!-- <SongTable :SongTableList="SongTableList"></SongTable> -->
+    <div class="line"></div>
+    <div class="recommend-song-table"><RecommedSong/></div>
    </div>
   </div>
 </template>
@@ -35,14 +35,14 @@
 import NavMenu from '../components/NavMenu.vue'
 import Swiper from '../components/Swiper.vue'
 import Recommend from '../components/Recommend.vue'
-// import SongTable from '../components/SongTable.vue'
+import RecommedSong from '../components/RecommedSong.vue'
 export default {
   name: 'Index',
   components: {
     NavMenu,
     Swiper,
-    Recommend
-    // SongTable
+    Recommend,
+    RecommedSong
   },
   data () {
     return {
@@ -60,14 +60,14 @@ export default {
       pageSize: 12,
       pageNum: 1,
       totalDataList: 0,
-      tagId: 1,
+      tagId: 1
       // SongTableList: []
     }
   },
   methods: {
     get () {
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/kd/getSongSheetByTagId/', {
+      _this.$axios.get(this.baseUrl + 'kd/getSongSheetByTagId/', {
         params: {
           tagId: _this.tagId,
           pageSize: _this.pageSize,
@@ -93,9 +93,9 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/kd/getSongSheetByTagId/', {
+      _this.$axios.get(this.baseUrl + 'kd/recommendSongSheet/', {
         params: {
-          tagId: 2,
+          userId: _this.$cookieStore.getCookie('userId'),
           pageSize: _this.pageSize,
           pageNum: _this.pageNum
         }
@@ -127,7 +127,7 @@ export default {
     this.handlePageList()
   },
   mounted () {
-    this.get()
+    //this.get()
   },
   computed: {
   }
@@ -176,5 +176,8 @@ a {
 .index-pagination {
     width: 200px;
     margin: 0 auto;
+}
+.recommend-song-table {
+ margin-bottom: 80px;
 }
 </style>

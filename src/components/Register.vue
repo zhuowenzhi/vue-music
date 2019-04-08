@@ -34,7 +34,7 @@
     </el-form-item>
      <el-form-item prop="verifycode">
       <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
-      <el-input v-model="verifycode" placeholder="请输入验证码" class="identifyinput"></el-input>
+      <el-input v-model="form.verifycode" placeholder="请输入验证码" class="identifyinput"></el-input>
     </el-form-item>
 
     <el-form-item>
@@ -71,7 +71,7 @@ export default {
       },
       identifyCodes: '1234567890',
       identifyCode: '',
-      verifycode: '',
+      // verifycode: '',
        rules: {
         phone: [
           {
@@ -125,7 +125,7 @@ export default {
         _this.$message('密码不能为空')
       } else if (_this.form.password !== _this.form.passwordRepeat) {
         _this.$message('两次输入的密码不一致')
-      } else if (_this.identifyCode !== _this.verifycode) {
+      } else if (_this.identifyCode !== _this.form.verifycode) {
         _this.$message('验证码错误')
       } else {
         _this.$axios.get('http://localhost:8088/music/user/createUser/', {
@@ -140,10 +140,12 @@ export default {
             // localStorage.setItem('name', _this.form.name)
             // localStorage.setItem('userId', res.data.payload)
             // localStorage.setItem('password', _this.form.password)
-            _this.$cookieStore.setCookie( 'userId' , res.data.payload,9999999960)
-            _this.$cookieStore.setCookie( 'name' ,_this.form.name,9999999960)
-            _this.$cookieStore.setCookie( 'password' ,_this.form.password,9999999960)
-            _this.$router.push('/')
+            if (res.data.code != "1") {
+              alert(res.data.msg)
+            } else {
+              _this.$router.push('/login')
+            }
+            
         }).catch(function (error) {
           console.log(error)
         })

@@ -21,7 +21,7 @@
                   <!-- <span>2017-04-25创建</span> -->
                 </div>
                 <div>
-                  <el-button type="success" icon="el-icon-caret-right">播放</el-button>
+                  <!-- <el-button type="success" icon="el-icon-caret-right">播放</el-button> -->
                   <!-- <el-button type="info" icon="el-icon-tickets">信息按钮</el-button> -->
                 </div>
                 <!-- <div class="introduces" ref="desc"  :class="showTotal ? 'total-introduce' : 'detailed-introduce'">

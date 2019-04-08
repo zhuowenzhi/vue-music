@@ -161,7 +161,7 @@ export default {
     // 添加喜欢的歌曲
     addLikeSong () {
        var _this = this
-         _this.$axios.get('http://localhost:8088/music/kd/setLikeSong/',{
+         _this.$axios.get(this.baseUrl + 'kd/setLikeSong/',{
         params: {
           userId: _this.$cookieStore.getCookie('userId'),
           songId:  _this.audio.songId
@@ -179,7 +179,7 @@ export default {
       setTimeout( ()=> {
         _this.currentIndex = 0
         console.log('_this.list[0].id' + _this.list[0].id)
-         _this.$axios.get('http://localhost:8088/music/kd/getSongById/',{
+         _this.$axios.get(this.baseUrl + 'kd/getSongById/',{
         params: {
           userId: _this.$cookieStore.getCookie('userId'),
           songId: _this.list[0].songid
@@ -202,23 +202,9 @@ export default {
       index && (this.currentIndex = index)
       console.log("currentIndex.currentIndex:" + this.currentIndex)
       var _this = this
-      // setTimeout( ()=> {
-      //    // 现在跑的是nextl逻辑
-      //   if (!_this.playing) {
-      //     _this.playing = !_this.playing
-      //     // if (_this.$refs.audio.currentTime >= _this.$refs.audio.totalTime) {
-      //       // _this.$refs.audio.currentTime = _this.$refs.audio.totalTime
-      //     _this.iconPlay = 'iconbofang'
-      //     //_this.audio.currentTime = 0
-      //     // }
-      //   } else {
-      //     // _this.$refs.audio.pause()
-      //     _this.iconPlay = 'iconbofang1'
-      //     //_this.audio.currentTime = 0
-      //     //_this.playing = !_this.playing
-      //   }
-      // },500)
 
+      //发送日志1
+      _this.sendLog(_this.audio.songId, _this.audio.currentTime)
       _this.audio.audioSrc = song.url
       _this.audio.imgUrl = song.pic
       _this.audio.singerName = song.singer
@@ -229,41 +215,16 @@ export default {
        
 
       //发送数据到后台
-      _this.$axios.get('http://localhost:8088/music/kd/getSongById/',{
+      _this.$axios.get(this.baseUrl + 'kd/getSongById/',{
       params: {
         userId: _this.$cookieStore.getCookie('userId'),
         songId: song.songid
       }
       }).then(function (res){
-        // _this.audio.audioSrc = res.data.payload.url
-        // _this.audio.imgUrl = res.data.payload.pic
-        // _this.audio.singerName = res.data.payload.singer
-        // _this.audio.songName = res.data.payload.name
-        // _this.audio.totalTime = Math.floor(res.data.payload.time / 60) + ":" + (res.data.payload.time % 60 / 100).toFixed(2).slice(-2)
-        // _this.audio.currentTime = _this.$refs.audio.currentTime
-        // _this.audio.songId = res.data.payload.songid
-        // if (_this.audioSrc !== _this.audioSrc) {
-        //   //  _this.$axios.get('http://localhost:8088/music/kd/songLogTime/',{
-        //   //   params: {
-        //   //     userId: _this.$cookieStore.getCookie('userId'),
-        //   //     playTime: _this.$refs.audio.currentTime
-        //   //   }
-        //   // }).then(function (res) {
-        //   //   console.log(res)
-        //   // })
-        // }
+      
          if (!_this.playing) {
           _this.playing = !_this.playing
-          // if (_this.$refs.audio.currentTime >= _this.$refs.audio.totalTime) {
-            // _this.$refs.audio.currentTime = _this.$refs.audio.totalTime
           _this.iconPlay = 'iconbofang'
-          //_this.audio.currentTime = 0
-          // }
-        } else {
-          // _this.$refs.audio.pause()
-          _this.iconPlay = 'iconbofang1'
-          //_this.audio.currentTime = 0
-          //_this.playing = !_this.playing
         }
         _this.$refs.audio.play()
         
@@ -271,31 +232,31 @@ export default {
         console.log(error)
       })
 
-
-      // setTimeout( ()=> {
-      //   _this.togglePlay()
-      //   _this.togglePlay()
-      // },1000)
+    },
+    sendLog(songid, currentTime) {
+      var _this = this
+      var min = currentTime.split(':')[0]
+      var sec = currentTime.split(':')[1]
+      _this.$axios.get(_this.baseUrl + 'kd/logSongTime/',{
+        params: {
+          userId: _this.$cookieStore.getCookie('userId'),
+          songId: songid,
+          time: Number(min*60) + Number(sec)
+        } 
+      }).then(function (res){
+        console.log(res.data.msg)
+      }).catch(function (error) {
+        console.log(error)
+      })
     },
     prev() {
       var _this = this
-      // console.log("this.currentIndex" + this.currentIndex)
-      // console.log(this.list.length)
-      // if (this.list.length === 1) {
-      //   this.loop()
-      // } else {
-      //   let index = this.currentIndex - 1
-      //   if (index === -1) {
-      //     index = this.list.length - 1
-      //   }
-      //   if (!this.playing) {
-      //     this.play()
-      //   }
-      // }
-      // this.songReady = false
       if (_this.list.length === 1) {
         _this.loop()
       } else {
+//发送日志1
+      _this.sendLog(_this.audio.songId, _this.audio.currentTime)
+
         let index = --_this.currentIndex;
         if (index === _this.list.length) {
           index = 0
@@ -330,6 +291,9 @@ export default {
       if (_this.list.length === 1) {
         _this.loop()
       } else {
+        //发送日志1
+      _this.sendLog(_this.audio.songId, _this.audio.currentTime)
+      
         let index = ++_this.currentIndex;
         if (index === _this.list.length) {
           index = 0
@@ -383,44 +347,16 @@ export default {
       _this.audio.songId = song.songid
 
       // todo 发送到后台
-      _this.$axios.get('http://localhost:8088/music/kd/getSongById/',{
+      _this.$axios.get(this.baseUrl + 'kd/getSongById/',{
       params: {
         userId: _this.$cookieStore.getCookie('userId'),
         songId: song.songid
       }
     }).then(function (res){
-      // _this.audio.audioSrc = res.data.payload.url
-      // _this.audio.imgUrl = res.data.payload.pic
-      // _this.audio.singerName = res.data.payload.singer
-      // _this.audio.songName = res.data.payload.name
-      // _this.audio.totalTime = Math.floor(res.data.payload.time / 60) + ":" + (res.data.payload.time % 60 / 100).toFixed(2).slice(-2)
-      // _this.audio.currentTime = _this.$refs.audio.currentTime
-      // _this.audio.songId = res.data.payload.songid
-      // if (_this.audioSrc !== _this.audioSrc) {
-      //     _this.$axios.get('http://localhost:8088/music/kd/songLogTime/',{
-      //     params: {
-      //       userId: _this.$cookieStore.getCookie('userId'),
-      //       playTime: _this.$refs.audio.currentTime
-      //     }
-      //   }).then(function (res) {
-      //     console.log(res)
-      //     console.log("触发提交时间")
-      //   })
-      // }
       _this.$refs.audio.play()
     }).catch(function (error) {
       console.log(error)
     })
-    console.log('bbobob')
-    
-    // } else {
-    //   console.log("next_play 的else 永远不会输出")
-    //   // _this.$refs.audio.pause()
-    //   _this.iconPlay = 'iconbofang1'
-    //   _this.audio.currentTime = 0
-    //   //_this.playing = !_this.playing
-    //   console.log('ttttt')
-    // }
     },
     loop() {
       this.$refs.audio.currentTime = 0
@@ -481,7 +417,7 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/kd/getMusicSheetById/', {
+      _this.$axios.get(this.baseUrl + 'kd/getMusicSheetById/', {
         params: {
           songlistId: _this.$route.query.songlistId,
           pageSize: _this.pageSize + 2,
@@ -501,13 +437,13 @@ export default {
             url: res.data.payload.list[i].url,
             time: Math.floor(res.data.payload.list[i].time / 60) + ":" + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
             lrc: res.data.payload.list[i].lrc,
-            currentPage: res.data.payload.currentPage,
-            pageSize: res.data.payload.pageSize,
-            pageNum: res.data.payload.pageNum
           })
         }
+          //  currentPage: res.data.payload.currentPage,
+          //   pageSize: res.data.payload.pageSize,
+          //   pageNum: res.data.payload.pageNum
         _this.totalDataList = res.data.payload.total
-        _this.pageNum = res.data.payload
+        _this.pageNum = res.data.payload.pageNum
         console.log('播单')
         console.log( _this.list)
       })

@@ -11,7 +11,7 @@
     </el-form-item>
      <el-form-item prop="verifycode">
       <!-- 注意：prop与input绑定的值一定要一致，否则验证规则中的value会报undefined，因为value即为绑定的input输入值 -->
-      <el-input v-model="verifycode" placeholder="请输入验证码" class="identifyinput"></el-input>
+      <el-input v-model="form.verifycode" placeholder="请输入验证码" class="identifyinput"></el-input>
     </el-form-item>
 
     <el-form-item>
@@ -49,24 +49,24 @@ export default {
       },
       identifyCodes: '1234567890',
       identifyCode: '',
-      verifycode: '',
+      // verifycode: '',
       rules: {
-        phone: [
-          {
-            required: true,
-            trigger: 'blur'
-          },
-          {
-            min: 11,
-            max: 11,
-            message: '请输入11位数字',
-            trigger: 'blur'
-          },
-          {
-            pattern: /^1[34578]\d{9}$/,
-            message: '请输入正确的电话号码'
-          }
-        ],
+        // phone: [
+        //   {
+        //     required: true,
+        //     trigger: 'blur'
+        //   },
+        //   {
+        //     min: 11,
+        //     max: 11,
+        //     message: '请输入11位数字',
+        //     trigger: 'blur'
+        //   },
+        //   {
+        //     pattern: /^1[34578]\d{9}$/,
+        //     message: '请输入正确的电话号码'
+        //   }
+        // ],
         password: [
           {
             required: true,
@@ -94,28 +94,31 @@ export default {
   methods: {
     login () {
       var _this = this
-      if (_this.$cookieStore.getCookie('name') === this.form.name && _this.$cookieStore.getCookie('password') === this.form.password) {
-        this.$router.push({ name: 'home' })
-          _this.$axios.get('http://localhost:8088/music/user/login/', {
+      if (_this.$cookieStore.getCookie('name') === _this.form.name && _this.$cookieStore.getCookie('password') === _this.form.password) {
+        _this.$router.push({ name: 'home' })
+          _this.$axios.get(_this.baseUrl + 'user/login/', {
         params: {
           userName: _this.form.name,
-          password: _this.form.password,
-          userId: _this.$cookieStore.getCookie('userId')
+          password: _this.form.password
         }
         }).then(function (res) {
+          _this.$cookieStore.setCookie( 'userId' , res.data.payload,9999999960)
+          _this.$cookieStore.setCookie( 'name' ,_this.form.name,9999999960)
+          _this.$cookieStore.setCookie( 'password' ,_this.form.password,9999999960)
+          _this.$cookieStore.setCookie( 'address' ,_this.form.address,9999999960)
           _this.$router.push('/')
         }).catch(function (error) {
           console.log(error)
         })
-      }else if (this.form.name === '') {
-        this.$message('昵称不能为空')
+      }else if (_this.form.name === '') {
+        _this.$message('昵称不能为空')
         console.log(" _this.$cookieStore" + userId)
-      } else if (this.form.password === '') {
-        this.$message('密码不能为空')
-      } else if (this.identifyCode !== this.verifycode) {
-        this.$message('验证码错误')
+      } else if (_this.form.password === '') {
+        _this.$message('密码不能为空')
+      } else if (_this.identifyCode != _this.form.verifycode) {
+        _this.$message('验证码错误')
       } else {
-        this.$message('请检查用户名或者密码是否正确')
+        _this.$message('请检查用户名或者密码是否正确')
       }
     },
 
