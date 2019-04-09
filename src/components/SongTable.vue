@@ -51,9 +51,6 @@
               <span class="song-name">{{ audio.songName }}</span>
               <span class="singer-name">{{ audio.singerName }}</span>
           </div>
-          <!-- <div class="audio-play-bar">
-            <div class="progress-btn"></div>
-          </div> -->
           <div class="bar">
           <div class="progressbar" ref="runfatbar" @click="playMusic">
             <div class="greenbar" ref="runbar">
@@ -84,7 +81,11 @@ import { setTimeout } from 'timers'
 import { mapState } from 'vuex'
 import { constants } from 'crypto';
 export default {
-  props: {},
+  props: {
+    sendParams: {
+      type: Object
+    }
+  },
   components: {
   },
   data () {
@@ -417,15 +418,23 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get(this.baseUrl + 'kd/getMusicSheetById/', {
+      console.log('=======================')
+      console.log(_this.sendParams)
+      console.log(_this.sendParams.url)
+      console.log('=======================')
+      _this.$axios.get(_this.sendParams.url, {
+        // params: _this.sendParams.params
         params: {
-          songlistId: _this.$route.query.songlistId,
+          songlistId: _this.sendParams.songlistId,
           pageSize: _this.pageSize + 2,
           pageNum: _this.pageNum
         }
       }).then(function (res) {
-     
+        console.log("+++++++++++++++++++++res")
+        console.log(res)
+        console.log("+++++++++++++++++++++res")
         console.log(res.data.payload.list)
+        console.log("+++++++++++++++++++++res")
         for (let i = 0; i < res.data.payload.list.length; i++) {
           _this.list.push({
             id: res.data.payload.list[i].id,

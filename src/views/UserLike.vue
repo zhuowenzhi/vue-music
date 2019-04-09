@@ -37,7 +37,7 @@
              </div>
            </div>
            <h1>收藏的歌曲</h1>
-           <LikeSong></LikeSong>
+            <UserSongTable :sendParams='sendParams'></UserSongTable>
         </div>
       </div>
    
@@ -46,15 +46,15 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-import LikeSong from '../components/LikeSong.vue'
-import Audio from '../components/Audio.vue'
+import UserSongTable from '../components/UserSongTable.vue'
+// import Audio from '../components/Audio.vue'
 export default {
   name: 'UserSong',
   show: false,
   components: {
     NavMenu,
-    LikeSong,
-    Audio
+    UserSongTable
+    // Audio
   },
   data () {
     return {
@@ -65,7 +65,16 @@ export default {
       rem: '',
       list: [],
       name:'',
-      pic_url: 'http://localhost:8088/music/image/user.jpg'
+      pic_url: 'http://localhost:8088/music/image/user.jpg',
+      sendParams: {
+        url: this.baseUrl + 'kd/getLikeSongList/',
+        // userId: this.$cookieStore.getCookie('userId')
+        // params: {
+        // songlistId: this.$route.query.songlistId,
+        // pageSize: this.pageSize + 2,
+        // pageNum: this.pageNum
+        // }
+      }
     }
   },
   computed: {

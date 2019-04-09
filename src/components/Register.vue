@@ -128,7 +128,7 @@ export default {
       } else if (_this.identifyCode !== _this.form.verifycode) {
         _this.$message('验证码错误')
       } else {
-        _this.$axios.get('http://localhost:8088/music/user/createUser/', {
+        _this.$axios.get(_this.baseUrl + 'user/createUser/', {
         params: {
           name: _this.form.name,
           password: _this.form.password,
@@ -143,6 +143,7 @@ export default {
             if (res.data.code != "1") {
               alert(res.data.msg)
             } else {
+              alert(res.data.msg)
               _this.$router.push('/login')
             }
             

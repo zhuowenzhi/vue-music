@@ -74,7 +74,7 @@ export default {
     },
     getTag () {
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/kd/getAllTag').then(function (res) {
+      _this.$axios.get(_this.baseUrl + 'kd/getAllTag').then(function (res) {
         for (let i = 0; i < res.data.payload.length; i++) {
           _this.tags.push({
             tagId: res.data.payload[i].id,
@@ -92,7 +92,7 @@ export default {
     getTagList (tagId, tagName) {
       var _this = this
       _this.tagName = tagName
-      _this.$axios.get('http://localhost:8088/music/kd/getHotSongSheet/', {
+      _this.$axios.get(_this.baseUrl + 'kd/getHotSongSheet/', {
         params: {
           tagId: tagId,
           pageSize: _this.pageSize,
@@ -138,7 +138,7 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/kd/getSongSheetByTagId/', {
+      _this.$axios.get(_this.baseUrl + 'kd/getSongSheetByTagId/', {
         params: {
           tagId: 2,
           pageSize: _this.pageSize,

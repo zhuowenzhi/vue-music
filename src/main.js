@@ -14,6 +14,8 @@ Vue.use(ElementUI)
 Vue.use(VueResource)
 Vue.use(VueBus)
 Vue.prototype.baseUrl = 'http://localhost:8088/music/'
+Vue.prototype.pageSize = 10
+Vue.prototype.pageNum = 1
 Vue.prototype.$axios = axios
 axios.defaults.headers.common['token'] = 'f4c902c9ae5a2a9d8f84868ad064e706'
 axios.defaults.headers.post['Content-type'] = 'application/json'

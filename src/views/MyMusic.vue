@@ -37,7 +37,7 @@
              </div>
            </div>
            <h1>歌曲列表</h1>
-           <SongTable></SongTable>
+           <SongTable :sendParams="sendParams"></SongTable>
 
         </div>
       </div>
@@ -65,10 +65,21 @@ export default {
       showExchangeButton: true,
       rem: '',
       songlistpic: '',
-      songlistname: ''
+      songlistname: '',
+      pageSize: 10,
+      pageNum: 1,
+      sendParams: {
+        url: this.baseUrl + 'kd/getMusicSheetById/',
+        songlistId: this.$route.query.songlistId,
+        // params: {
+        // songlistId: this.$route.query.songlistId,
+        // pageSize: this.pageSize + 2,
+        // pageNum: this.pageNum
+        // }
+      }
     }
   },
-  computed: {
+  mounted : {
   },
   methods: {
     getSongListInfo () {
@@ -93,6 +104,7 @@ export default {
     showTotalIntro () {
       this.showTotal = !this.showTotal
       this.exchangeButton = !this.exchangeButton
+     
     },
     getRem () {
       console.log('getRem')
@@ -104,6 +116,8 @@ export default {
     },
     getParams () {
       console.log(this.$route.query.songlistId)
+      console.log("///////////////////////////////this.sendParams")
+      console.log(this.sendParams)
     }
   },
   created () {

@@ -68,7 +68,7 @@
           <span>{{ audio.totalTime }}</span>
       </div>
       <div class="audio-flag">
-          <div class="iconfont iconshoucang"></div>
+          <div class="iconfont iconshoucang" @click="addLikeSong()"></div>
           <div class="iconfont" :class="iconVolt" @click="changedMuted()"></div>
           <div class="iconfont iconziyuanldpi"></div>
           <div class="iconfont iconlist-2-copy"></div>
@@ -84,7 +84,11 @@ import { setTimeout } from 'timers'
 import { mapState } from 'vuex'
 import { constants } from 'crypto';
 export default {
-  props: {},
+  props: {
+    sendParams: {
+      type: Object
+    }
+  },
   components: {
   },
   data () {
@@ -417,15 +421,23 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get(this.baseUrl + 'kd/getLikeSongList/', {
+      console.log('=======================')
+      console.log(_this.sendParams)
+      console.log(_this.sendParams.url)
+      console.log('=======================')
+      _this.$axios.get(_this.sendParams.url, {
+        // params: _this.sendParams.params
         params: {
           userId: _this.$cookieStore.getCookie('userId'),
           pageSize: _this.pageSize + 2,
           pageNum: _this.pageNum
         }
       }).then(function (res) {
-     
+        console.log("+++++++++++++++++++++res")
+        console.log(res)
+        console.log("+++++++++++++++++++++res")
         console.log(res.data.payload.list)
+        console.log("+++++++++++++++++++++res")
         for (let i = 0; i < res.data.payload.list.length; i++) {
           _this.list.push({
             id: res.data.payload.list[i].id,

@@ -37,7 +37,7 @@
              </div>
            </div>
            <h1>历史歌曲</h1>
-           <HistorySong></HistorySong>
+           <UserSongTable :sendParams='sendParams'></UserSongTable>
         </div>
       </div>
    
@@ -46,15 +46,15 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-import Audio from '../components/Audio.vue'
-import HistorySong from '../components/HistorySong.vue'
+// import Audio from '../components/Audio.vue'
+import UserSongTable from '../components/UserSongTable.vue'
 export default {
   name: 'UserSong',
   show: false,
   components: {
     NavMenu,
-    Audio,
-    HistorySong
+    // Audio,
+    UserSongTable
   },
   data () {
     return {
@@ -66,6 +66,15 @@ export default {
       list: [],
       name:'',
       pic_url: 'http://localhost:8088/music/image/user.jpg',
+      sendParams: {
+        url: this.baseUrl + 'kd/getHistorySongList/',
+        // userId: this.$cookieStore.getCookie('userId')
+        // params: {
+        // songlistId: this.$route.query.songlistId,
+        // pageSize: this.pageSize + 2,
+        // pageNum: this.pageNum
+        // }
+      }
     }
   },
   computed: {

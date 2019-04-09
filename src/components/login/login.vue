@@ -96,7 +96,7 @@ export default {
       var _this = this
       if (_this.$cookieStore.getCookie('name') === this.form.name && _this.$cookieStore.getCookie('password') === this.form.password) {
         this.$router.push({ name: 'home' })
-          _this.$axios.get('http://localhost:8088/music/user/login/', {
+          _this.$axios.get(_this.baseUrl + 'user/login/', {
         params: {
           userName: _this.form.name,
           password: _this.form.password,

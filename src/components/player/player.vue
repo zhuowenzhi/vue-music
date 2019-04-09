@@ -174,7 +174,7 @@ export default {
        var _this = this
       //  _this.isDisable = true
        console.log(_this.isDisable )
-         _this.$axios.get('http://localhost:8088/music/kd/setLikeSong/',{
+         _this.$axios.get(_this.baseUrl + 'kd/setLikeSong/',{
         params: {
           userId: _this.$cookieStore.getCookie('userId'),
           songId:  _this.audio.songId
@@ -192,7 +192,7 @@ export default {
       var _this = this
       setTimeout( ()=> {
         console.log('_this.list[0].id' + _this.list[0].id)
-         _this.$axios.get('http://localhost:8088/music/kd/getSongById/',{
+         _this.$axios.get(_this.baseUrl + 'kd/getSongById/',{
         params: {
           userId: _this.$cookieStore.getCookie('userId'),
           songId: _this.list[0].songid
@@ -218,7 +218,7 @@ export default {
         _this.iconPlay = 'iconbofang'
         _this.$refs.audio.play()
         _this.playing = !_this.playing
-        _this.$axios.get('http://localhost:8088/music/kd/getSongById/',{
+        _this.$axios.get(_this.baseUrl + 'kd/getSongById/',{
         params: {
           userId: _this.$cookieStore.getCookie('userId'),
           songId: song.songid
@@ -232,7 +232,7 @@ export default {
         _this.audio.currentTime = _this.$refs.audio.currentTime
         _this.audio.songId = res.data.payload.songid
         if (_this.audioSrc !== _this.audioSrc) {
-           _this.$axios.get('http://localhost:8088/music/kd/songLogTime/',{
+           _this.$axios.get(_this.baseUrl + 'kd/songLogTime/',{
             params: {
               userId: _this.$cookieStore.getCookie('userId'),
               playTime: _this.$refs.audio.currentTime
@@ -350,7 +350,7 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/kd/getMusicSheetById/', {
+      _this.$axios.get(_this.baseUrl + 'kd/getMusicSheetById/', {
         params: {
           songlistId: _this.$route.query.songlistId,
           pageSize: _this.pageSize + 2,

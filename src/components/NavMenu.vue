@@ -58,7 +58,7 @@ export default {
     // 获取用户信息
     getUserInfo() {
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/user/getUserInfo/',{
+      _this.$axios.get(_this.baseUrl + 'user/getUserInfo/',{
         params: {
           userId:  _this.$cookieStore.getCookie('userId')
         }

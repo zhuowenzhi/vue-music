@@ -107,7 +107,7 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get('http://localhost:8088/music/kd/getMusicSheetById/', {
+      _this.$axios.get(_this.baseUrl + 'kd/getMusicSheetById/', {
         params: {
           songlistId: _this.$route.query.songlistId,
           pageSize: _this.pageSize + 2,

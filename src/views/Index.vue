@@ -26,7 +26,10 @@
       <h1>热门歌曲</h1>
     </div>
     <div class="line"></div>
-    <div class="recommend-song-table"><RecommedSong/></div>
+    <div class="recommend-song-table">
+      <!-- <RecommedSong/> -->
+      <SongTable :sendParams="sendParams"></SongTable>
+    </div>
    </div>
   </div>
 </template>
@@ -35,14 +38,14 @@
 import NavMenu from '../components/NavMenu.vue'
 import Swiper from '../components/Swiper.vue'
 import Recommend from '../components/Recommend.vue'
-import RecommedSong from '../components/RecommedSong.vue'
+import SongTable from '../components/SongTable.vue'
 export default {
   name: 'Index',
   components: {
     NavMenu,
     Swiper,
     Recommend,
-    RecommedSong
+    SongTable
   },
   data () {
     return {
@@ -60,8 +63,17 @@ export default {
       pageSize: 12,
       pageNum: 1,
       totalDataList: 0,
-      tagId: 1
-      // SongTableList: []
+      tagId: 1,
+      sendParams: {
+        url: this.baseUrl + 'kd/getMusicSheetById/',
+        // songlistId: this.$route.query.songlistId,
+        songlistId: '2204388891'
+        // params: {
+        // songlistId: this.$route.query.songlistId,
+        // pageSize: this.pageSize + 2,
+        // pageNum: this.pageNum
+        // }
+      }
     }
   },
   methods: {

@@ -1,9 +1,18 @@
 <template>
   <div id="app">
+    <!-- <Audio></Audio> -->
     <router-view/>
   </div>
 </template>
 
+<script>
+import Audio from './components/Audio.vue'
+export default {
+  components: {
+    Audio
+  }
+}
+</script>
 <style lang="scss">
   $main-color: #42b983;
   * {

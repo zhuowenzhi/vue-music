@@ -94,7 +94,7 @@ export default {
   methods: {
     login () {
       var _this = this
-      if (_this.$cookieStore.getCookie('name') === _this.form.name && _this.$cookieStore.getCookie('password') === _this.form.password) {
+      if ( _this.form.name && _this.form.password) {
         _this.$router.push({ name: 'home' })
           _this.$axios.get(_this.baseUrl + 'user/login/', {
         params: {
@@ -110,9 +110,8 @@ export default {
         }).catch(function (error) {
           console.log(error)
         })
-      }else if (_this.form.name === '') {
+      }else if (_this.form.name) {
         _this.$message('昵称不能为空')
-        console.log(" _this.$cookieStore" + userId)
       } else if (_this.form.password === '') {
         _this.$message('密码不能为空')
       } else if (_this.identifyCode != _this.form.verifycode) {
