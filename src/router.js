@@ -22,11 +22,16 @@ export default new Router({
       name: 'LoginPage',
       component: () => import(/* webpackChunkName: "login" */ './views/LoginPage.vue')
     },
-    // {
-    //   path: '/components/login',
-    //   name: 'login',
-    //   component: Login
-    // },
+    {
+      path: '/singer',
+      name: 'singer',
+      component: () => import(/* webpackChunkName: "singer" */ './views/Singer.vue')
+    },
+    {
+      path: '/singersong',
+      name: 'SingerSong',
+      component: () => import(/* webpackChunkName: "singer" */ './views/SingerSong.vue')
+    },
     {
       path: '/songlist',
       name: 'SongList',

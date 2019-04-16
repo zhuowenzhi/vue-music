@@ -97,6 +97,7 @@ export default {
       currentShow: 'cd',
       playingLyric: '',
       currentPage: 1,
+      // page: 1,
       pageSize: 10,
       pageNum: 1,
       totalDataList: 0,
@@ -111,7 +112,14 @@ export default {
       lrc: '',
       list: [],
       iconPlay: 'iconbofang1',
+      dialogVisible: false,
+      // currentTime: '00:00',
+      // totalTime: '00:00',
       playing: false,
+      // audioSrc: ' ',
+      // imgUrl: '',
+      // songName: '',
+      // singerName: '',
       audio: {
         songId: '',
         audioSrc: ' ',
@@ -120,6 +128,12 @@ export default {
         singerName: '',
         currentTime: '00:00',
         totalTime: '00:00',
+      },
+      sliderTime: 0,
+      volumeShow: false,
+      sliderVolume: true,
+      controlList: {
+        noDownload: true
       },
       currentIndex: 0
     }
@@ -131,6 +145,9 @@ export default {
         newPlaying ? audio.play() : audio.pause()
       })
     }
+  },
+  computed: {
+
   },
   methods: {
     changedMuted () {
@@ -163,7 +180,7 @@ export default {
       setTimeout( ()=> {
         _this.currentIndex = 0
         console.log('_this.list[0].id' + _this.list[0].id)
-         _this.$axios.get(this.baseUrl + 'kd/getSongById/', {
+         _this.$axios.get(this.baseUrl + 'kd/getSongById/',{
         params: {
           userId: _this.$cookieStore.getCookie('userId'),
           songId: _this.list[0].songid
@@ -196,6 +213,8 @@ export default {
       _this.audio.totalTime = song.time
       _this.audio.currentTime = _this.$refs.audio.currentTime
       _this.audio.songId = song.songid
+       
+
       //发送数据到后台
       _this.$axios.get(this.baseUrl + 'kd/getSongById/',{
       params: {
@@ -203,6 +222,7 @@ export default {
         songId: song.songid
       }
       }).then(function (res){
+      
          if (!_this.playing) {
           _this.playing = !_this.playing
           _this.iconPlay = 'iconbofang'
@@ -212,6 +232,7 @@ export default {
       }).catch(function (error) {
         console.log(error)
       })
+
     },
     sendLog(songid, currentTime) {
       var _this = this
@@ -280,8 +301,10 @@ export default {
         }
         let _audio = _this.$refs.audio;
         let prevTime = _audio.currentTime;
-        // console.log('上一首播放时长'+prevTime);
-        // console.log(_this.list[index].url)
+        console.log('上一首播放时长'+prevTime);
+
+
+        console.log(_this.list[index].url)
         _this.audio.audioSrc = _this.list[index].url
         _this.audio.imgUrl = _this.list[index].pic
         _this.audio.singerName = _this.list[index].singer
@@ -339,6 +362,7 @@ export default {
     loop() {
       this.$refs.audio.currentTime = 0
       this.$refs.audio.play()
+
       // 循环播放 歌词回到开始的时候
       if (this.currentLyric) {
         this.currentLyric.seek(0)
@@ -401,7 +425,7 @@ export default {
       _this.$axios.get(_this.sendParams.url, {
         // params: _this.sendParams.params
         params: {
-          songlistId: _this.sendParams.songlistId,
+          singerId: _this.sendParams.singerId,
           pageSize: _this.pageSize + 2,
           pageNum: _this.pageNum
         }
@@ -424,6 +448,9 @@ export default {
             lrc: res.data.payload.list[i].lrc,
           })
         }
+          //  currentPage: res.data.payload.currentPage,
+          //   pageSize: res.data.payload.pageSize,
+          //   pageNum: res.data.payload.pageNum
         _this.totalDataList = res.data.payload.total
         _this.pageNum = res.data.payload.pageNum
         console.log('播单')
@@ -490,14 +517,14 @@ export default {
     })
 
     // 移动端监听进度条触摸拖动
-    musicBar.addEventListener('touchmove', (event) => {
+    musicBar.addEventListener('touchmove',(event) => {
       const events = event.targetTouches[0].pageX // 获得触摸拖动的距离
       musicBar.style.width = `${(events / musicWidth) * 100}%` // 计算进度条所在比例宽度
-      music.pause() // 触摸拖动时停止播放
+      music.pause(); // 触摸拖动时停止播放
     })
 
     // 移动端监听进度条触摸拖动结束
-    musicBar.addEventListener('touchend', () => {
+    musicBar.addEventListener('touchend',() => {
       const touwidth = (musicBar.offsetWidth / musicWidth) // 计算进度条所在比例
       music.currentTime = music.duration * touwidth // 通过所在比例赋值给音频应在的播放时间
       music.play() // 根据播放时间开始播放
