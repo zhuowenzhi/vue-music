@@ -1,4 +1,3 @@
-    
 <template>
   <div class="index">
     <div class="nav">
@@ -6,30 +5,29 @@
     </div>
     <div class="singer">
       <div class="singer-left">
-        <div class="singer-left-tag" v-for="(item, index) in singerType" :key="index">
-            <h2>{{item[0].type}}</h2>
-            <ul class="singer-left-tag-ul" v-for="(item, index) in item" :key="index">
-                <li @click="getSingerId(item.id, item.name)"><a href="#">{{item.name}}</a></li>
+        <div class="singer-left-tag" >
+            <h2>排行榜</h2>
+            <ul class="singer-left-tag-ul" v-for="(item, index) in rankList" :key="index">
+                <li @click="getRankId(item.rankId, item.style)"><a href="#">{{item.style}}</a></li>
             </ul>
         </div>
       </div>
       <div class="main">
         <div class="recommend-title">
-        <h1>{{typeName}}</h1>
+        <h1>{{rankName}}</h1>
         </div>
-        <div class="line"></div>
-        <SingerRecommed :list="list"></SingerRecommed>
-        <div class="index-pagination">
-        <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :page-sizes="[5, 10, 20, 40]"
-        layout="total, prev, pager, next, jumper"
-        :total="totalDataList">
-        </el-pagination>
-        </div>
+        <RankTable :list="list"></RankTable>
+         <div class="index-pagination">
+          <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :page-sizes="[5, 10, 20, 40]"
+          layout="total, prev, pager, next, jumper"
+          :total="totalDataList">
+          </el-pagination>
+      </div>
       </div>
     </div>
   </div>
@@ -37,15 +35,13 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-// import Recommend from '../components/Recommend.vue'
-import SingerRecommed from '../components/SingerRecommed.vue'
+import RankTable from '../components/RankTable.vue'
 import { constants } from 'crypto';
 export default {
   name: 'Singer',
   components: {
     NavMenu,
-    SingerRecommed
-    // Recommend
+    RankTable
   },
   data () {
     return {
@@ -54,44 +50,53 @@ export default {
       picurl: '',
       briefdesc: '',
       list: [],
-      singerType: [],
-      typeName: '',
+      rankList: [],
+      rankName: '',
       currentPage: 1,
       pageSize: 12,
       pageNum: 1,
       totalDataList: 0,
       tagId: 1,
-      sendParams: {
-        url: this.baseUrl + 'kd/getMusicSheetById/',
-        songlistId: '2204388891'
-      }
     }
   },
   methods: {
-    // 获取左侧栏所有歌手类型
+    // 获取左侧栏所有排行榜
     get () {
       var _this = this
-      _this.$axios.get(this.baseUrl + 'rank/getAllSingerType').then(function (res) {
-        _this.singerType = res.data.payload
+      _this.$axios.get(this.baseUrl + 'rank/getRankList/').then(function (res) {
+        _this.rankList = res.data.payload
       }, function () {
         console.log('请求失败处理')
       })
     },
-    // 点击左侧栏获取歌手类型
-    getSingerId (id, name) {
+    // 点击左侧栏获取排行榜歌曲
+    getRankId (id, name) {
       console.log(id)
        var _this = this
-      _this.typeName = name
-      _this.$axios.get(_this.baseUrl + 'rank/getAllSingerByTypeId', {
+      _this.rankName = name
+      _this
+       _this.$axios.get(_this.baseUrl + 'rank/getRankListById/', {
         params: {
-          typeId: id,
+          rankId: id,
           pageNum: _this.pageNum,
-          pageSize: _this.pageSize
+          pageSize: 20
         }
       }).then(function (res) {
         console.log(res)
         _this.list = []
-        _this.list = res.data.payload.list
+        for (let i = 0; i < res.data.payload.list.length; i++) {
+          _this.list.push({
+            id: res.data.payload.list[i].id,
+            number: i + 1,
+            name: res.data.payload.list[i].name,
+            songid: res.data.payload.list[i].songid,
+            singer: res.data.payload.list[i].singer,
+            pic: res.data.payload.list[i].pic,
+            url: res.data.payload.list[i].url,
+            time: Math.floor(res.data.payload.list[i].time / 60) + ':' + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
+            lrc: res.data.payload.list[i].lrc
+          })
+        }
         _this.pageSize = res.data.payload.pageSize
         _this.pageNum = res.data.payload.pageNum
         _this.totalDataList = res.data.payload.total
@@ -99,7 +104,8 @@ export default {
         console.log('请求失败处理')
       })
     },
-    handleSizeChange (size) {
+    // 传递分页的list数据
+      handleSizeChange (size) {
       var _this = this
       _this.pageSize = size
       _this.handlePageList()
@@ -113,30 +119,37 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get(this.baseUrl + 'rank/getAllSingerByTypeId/', {
+      
+      _this.$axios.get(this.baseUrl + 'rank/getRankListById', {
         params: {
-          typeId: '1002',
-          pageSize: _this.pageSize,
+          rankId: 1,
+          pageSize: 20,
           pageNum: _this.pageNum
         }
       }).then(function (res) {
-        _this.list = res.data.payload.list
-        _this.pageSize = res.data.payload.pageSize
-        _this.pageNum = res.data.payload.pageNum
+        for (let i = 0; i < res.data.payload.list.length; i++) {
+          _this.list.push({
+            id: res.data.payload.list[i].id,
+            number: i + 1,
+            name: res.data.payload.list[i].name,
+            songid: res.data.payload.list[i].songid,
+            singer: res.data.payload.list[i].singer,
+            pic: res.data.payload.list[i].pic,
+            url: res.data.payload.list[i].url,
+            time: Math.floor(res.data.payload.list[i].time / 60) + ':' + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
+            lrc: res.data.payload.list[i].lrc
+          })
+        }
         _this.totalDataList = res.data.payload.total
-      }).catch(function (error) {
-        console.log(error)
+        _this.pageNum = res.data.payload.pageNum
       })
-    }
-  },
-  created () {
-    this.handlePageList()
+    },
   },
   mounted () {
-    this.get()
+    var _this = this
+    _this.get()
+    _this.handlePageList()
   },
-  computed: {
-  }
 }
 </script>
 
@@ -156,12 +169,14 @@ export default {
     margin: 0 auto;
 }
 .singer-left {
-    width: 250px;
+    width:350px;
     border: 1px solid #ccc;
     padding: 10px;
+    margin-right: 20px;
 }
 .singer-left-tag {
-  margin-top: 20px;
+    // border-bottom: 1px solid #ccc;
+    margin-top: 20px;
 }
 .singer-left-tag h2 {
     margin-bottom: 6px;
@@ -172,7 +187,7 @@ export default {
 }
 .singer-left-tag-ul li{
    margin-bottom: 10px;
-    border:1px #ccc solid;
+   border:1px #ccc solid;
    background: rgba(250, 247, 247, 0.938);
    padding: 10px;
 }

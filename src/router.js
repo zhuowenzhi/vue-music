@@ -43,6 +43,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "search" */ './views/Search.vue')
     },
     {
+      path: '/rank',
+      name: 'Rank',
+      component: () => import(/* webpackChunkName: "search" */ './views/Rank.vue')
+    },
+    {
       path: '/userhistory',
       name: 'UserHistory',
       component: () => import(/* webpackChunkName: "usersong" */ './views/UserHistory.vue')

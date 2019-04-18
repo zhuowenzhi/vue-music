@@ -28,50 +28,50 @@
       label="歌手">
     </el-table-column>
   </el-table>
-  <div class="index-pagination">
-      <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-size="pageSize"
-      :page-sizes="[5, 10, 20, 40]"
-      layout="total, prev, pager, next, jumper"
-      :total="totalDataList">
-      </el-pagination>
+  <!-- <div class="index-pagination">
+    <el-pagination
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+    :current-page="currentPage"
+    :page-size="pageSize"
+    :page-sizes="[5, 10, 20, 40]"
+    layout="total, prev, pager, next, jumper"
+    :total="totalDataList">
+    </el-pagination>
+  </div> -->
+  <div class="audio">
+    <div class="audio-btns">
+        <span class="iconfont iconshangyishou" @click="prev()"></span>
+        <span class="iconfont" :class="iconPlay" @click="togglePlay()"></span>
+        <span class="iconfont iconxiayishou" @click="next()"></span>
     </div>
-    <div class="audio">
-      <div class="audio-btns">
-          <span class="iconfont iconshangyishou" @click="prev()"></span>
-          <span class="iconfont" :class="iconPlay" @click="togglePlay()"></span>
-          <span class="iconfont iconxiayishou" @click="next()"></span>
-      </div>
-      <img class="audio-img" :src="audio.imgUrl" alt="">
-      <div class="audio-play">
-          <div class="audio-play-info">
-              <span class="song-name">{{ audio.songName }}</span>
-              <span class="singer-name">{{ audio.singerName }}</span>
-          </div>
-          <div class="bar">
-          <div class="progressbar" ref="runfatbar" @click="playMusic">
-            <div class="greenbar" ref="runbar">
-              <span class="yuan" draggable="true"></span>
-            </div>
+    <img class="audio-img" :src="audio.imgUrl" alt="">
+    <div class="audio-play">
+        <div class="audio-play-info">
+            <span class="song-name">{{ audio.songName }}</span>
+            <span class="singer-name">{{ audio.singerName }}</span>
+        </div>
+        <div class="bar">
+        <div class="progressbar" ref="runfatbar" @click="playMusic">
+          <div class="greenbar" ref="runbar">
+            <span class="yuan" draggable="true"></span>
           </div>
         </div>
       </div>
-      <div class="audio-time">
-          <span>{{ audio.currentTime }}</span>
-          <span>/</span>
-          <span>{{ audio.totalTime }}</span>
-      </div>
-      <div class="audio-flag">
-          <div class="iconfont iconshoucang" @click="addLikeSong()"></div>
-          <div class="iconfont" :class="iconVolt" @click="changedMuted()"></div>
-          <div class="iconfont iconziyuanldpi"></div>
-          <div class="iconfont iconlist-2-copy"></div>
-      </div>
-      <audio ref="audio" id="audio" :src="audio.audioSrc" @timeupdate="updateTime"></audio>
     </div>
+    <div class="audio-time">
+        <span>{{ audio.currentTime }}</span>
+        <span>/</span>
+        <span>{{ audio.totalTime }}</span>
+    </div>
+    <div class="audio-flag">
+        <div class="iconfont iconshoucang" @click="addLikeSong()"></div>
+        <div class="iconfont" :class="iconVolt" @click="changedMuted()"></div>
+        <div class="iconfont iconziyuanldpi"></div>
+        <div class="iconfont iconlist-2-copy"></div>
+    </div>
+    <audio ref="audio" id="audio" :src="audio.audioSrc" @timeupdate="updateTime"></audio>
+  </div>
 </div>
  
 </template>
@@ -82,8 +82,11 @@ import { mapState } from 'vuex'
 import { constants } from 'crypto';
 export default {
   props: {
-    sendParams: {
-      type: Object
+    list: {
+      type: Array,
+      default () {
+        return ['']
+      }
     }
   },
   components: {
@@ -109,7 +112,7 @@ export default {
       url: '',
       time: '',
       lrc: '',
-      list: [],
+      // list: [],
       iconPlay: 'iconbofang1',
       playing: false,
       audio: {
@@ -375,45 +378,44 @@ export default {
       self.timeDuration = parseInt(self.$refs.audio.duration)
       // console.log(self.timeDuration)
     },
-    handleSizeChange (size) {
-      var _this = this
-      _this.pageSize = size
-      _this.handlePageList()
-    },
-    handleCurrentChange (currentPage) {
-      var _this = this
-      _this.pageNum = currentPage
-      _this.list = []
-      _this.handlePageList()
-    },
-    handlePageList () {
-      this.loading = true
-      var _this = this
-      _this.$axios.get(_this.sendParams.url, {
-        // params: _this.sendParams.params
-        params: {
-          songlistId: _this.sendParams.songlistId,
-          pageSize: 20,
-          pageNum: _this.pageNum
-        }
-      }).then(function (res) {
-        for (let i = 0; i < res.data.payload.list.length; i++) {
-          _this.list.push({
-            id: res.data.payload.list[i].id,
-            number: i + 1,
-            name: res.data.payload.list[i].name,
-            songid: res.data.payload.list[i].songid,
-            singer: res.data.payload.list[i].singer,
-            pic: res.data.payload.list[i].pic,
-            url: res.data.payload.list[i].url,
-            time: Math.floor(res.data.payload.list[i].time / 60) + ':' + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
-            lrc: res.data.payload.list[i].lrc
-          })
-        }
-        _this.totalDataList = res.data.payload.total
-        _this.pageNum = res.data.payload.pageNum
-      })
-    },
+    // handleSizeChange (size) {
+    //   var _this = this
+    //   _this.pageSize = size
+    //   _this.handlePageList()
+    // },
+    // handleCurrentChange (currentPage) {
+    //   var _this = this
+    //   _this.pageNum = currentPage
+    //   _this.list = []
+    //   _this.handlePageList()
+    // },
+    // handlePageList () {
+    //   this.loading = true
+    //   var _this = this
+    //   _this.$axios.get(_this.sendParams.url, {
+    //     params: {
+    //       songlistId: _this.sendParams.songlistId,
+    //       pageSize: 20,
+    //       pageNum: _this.pageNum
+    //     }
+    //   }).then(function (res) {
+    //     for (let i = 0; i < res.data.payload.list.length; i++) {
+    //       _this.list.push({
+    //         id: res.data.payload.list[i].id,
+    //         number: i + 1,
+    //         name: res.data.payload.list[i].name,
+    //         songid: res.data.payload.list[i].songid,
+    //         singer: res.data.payload.list[i].singer,
+    //         pic: res.data.payload.list[i].pic,
+    //         url: res.data.payload.list[i].url,
+    //         time: Math.floor(res.data.payload.list[i].time / 60) + ':' + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
+    //         lrc: res.data.payload.list[i].lrc
+    //       })
+    //     }
+    //     _this.totalDataList = res.data.payload.total
+    //     _this.pageNum = res.data.payload.pageNum
+    //   })
+    // },
     // 点击进度条事件
     playMusic (e) {
       // 音频所在对象

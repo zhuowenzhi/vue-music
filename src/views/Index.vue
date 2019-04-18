@@ -66,13 +66,7 @@ export default {
       tagId: 1,
       sendParams: {
         url: this.baseUrl + 'kd/getMusicSheetById/',
-        // songlistId: this.$route.query.songlistId,
         songlistId: '2204388891'
-        // params: {
-        // songlistId: this.$route.query.songlistId,
-        // pageSize: this.pageSize + 2,
-        // pageNum: this.pageNum
-        // }
       }
     }
   },
