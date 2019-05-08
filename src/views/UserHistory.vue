@@ -16,8 +16,8 @@
                   <!-- <span>我喜欢的音乐</span> -->
                 </div>
                 <div class="main-right-songinfo--userinfo">
-                  <img :src="pic_url">
-                  <span>{{name}}</span>
+                  <!-- <img :src="pic_url"> -->
+                  <!-- <span>{{name}}</span> -->
                   <!-- <span>2017-04-25创建</span> -->
                 </div>
                 <div>
@@ -37,7 +37,8 @@
              </div>
            </div>
            <h1>历史歌曲</h1>
-           <UserSongTable :sendParams='sendParams'></UserSongTable>
+          <!-- <SongTable :send-params="sendParams" :params="params"></SongTable> -->
+          <SongList :send-params="sendParams" :params="params"></SongList>
         </div>
       </div>
    
@@ -46,15 +47,15 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-// import Audio from '../components/Audio.vue'
-import UserSongTable from '../components/UserSongTable.vue'
+import SongList from '../components/SongList.vue'
+// import SongTable from '../components/SongTable.vue'
 export default {
   name: 'UserSong',
   show: false,
   components: {
     NavMenu,
-    // Audio,
-    UserSongTable
+    SongList
+    // SongTable
   },
   data () {
     return {
@@ -69,11 +70,11 @@ export default {
       sendParams: {
         url: this.baseUrl + 'kd/getHistorySongList/',
         // userId: this.$cookieStore.getCookie('userId')
-        // params: {
-        // songlistId: this.$route.query.songlistId,
-        // pageSize: this.pageSize + 2,
-        // pageNum: this.pageNum
-        // }
+      },
+      params: {
+        userId: this.$cookieStore.getCookie('userId'),
+        pageSize: 20,
+        pageNum: 1
       }
     }
   },
@@ -306,54 +307,4 @@ export default {
     }
   }
 }
-
-// .audio-flag, .audio{
-//     display: flex;
-//     display: -webkit-flex;
-//     align-items: center;
-// }
-// .audio {
-//     height: 70px;
-//     width: 100%;
-//     position: fixed;
-//     bottom: 0;
-//     left: 0;
-//     background-color:rgba(0, 0, 0, 0.8);
-//     color: #fff;
-// }
-// .audio > div {
-//     padding: 15px;
-// }
-// .audio-btns span {
-//     font-size: 30px;
-//     padding: 5px;
-// }
-// .audio-img {
-//     width: 40px;
-//     height: 40px;
-//     border: 1px #ccc solid;
-// }
-// .audio-play {
-//     flex-grow: 1;
-// }
-// .audio-play-bar {
-//     margin: 5px auto;
-//     height: 10px;
-//     border: 1px #ccc solid;
-//     border-radius: 5px;
-// }
-// .audio-play-info span{
-//     padding: 5px;
-// }
-// .audio-flag > div {
-//     padding: 5px;
-//     font-size: 18px;
-// }
-// .song-name {
-//     font-size: 16px;
-// }
-// .singer-name {
-//     font-size: 14px;
-//     color: #ccc;
-// }
 </style>

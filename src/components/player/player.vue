@@ -1,87 +1,46 @@
 <template>
 <div>
-   <el-table
-    :data="list"
-    stripe
-    style="width: 100%">
-    <el-table-column 
-      prop="number"
-      label=""
-      width="40">
-    </el-table-column>
-    <el-table-column width="40">
-      <template scope="song">
-        <span class="iconfont iconbofang1" @click="play(song.row)"></span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="歌曲标题"
-     >
-    </el-table-column>
-    <el-table-column
-      prop="time"
-      label="时长">
-    </el-table-column>
-    <el-table-column
-      prop="singer"
-      label="歌手">
-    </el-table-column>
-  </el-table>
-  <div class="index-pagination">
-      <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-size="pageSize"
-      :page-sizes="[5, 10, 20, 40]"
-      layout="total, prev, pager, next, jumper"
-      :total="totalDataList">
-      </el-pagination>
+  <div class="audio player" v-show="playlist.length > 0">
+    <div class="audio-btns">
+        <span class="iconfont iconshangyishou" @click="prev()"></span>
+        <span class="iconfont" :class="iconPlay" @click="togglePlay()"></span>
+        <span class="iconfont iconxiayishou" @click="next()"></span>
     </div>
-    <div class="audio player" v-show="playlist.length > 0">
-      <div class="audio-btns">
-          <span class="iconfont iconshangyishou" @click="prev()"></span>
-          <span class="iconfont" :class="iconPlay" @click="togglePlay()"></span>
-          <span class="iconfont iconxiayishou" @click="next()"></span>
-      </div>
-      <img class="audio-img" :src="audio.imgUrl" alt="">
-      <div class="audio-play">
-          <div class="audio-play-info">
-              <span class="song-name">{{ audio.songName }}</span>
-              <span class="singer-name">{{ audio.singerName }}</span>
-          </div>
-          <!-- <div class="audio-play-bar">
-            <div class="progress-btn"></div>
-          </div> -->
-          <div class="bar">
-          <div class="progressbar" ref="runfatbar" @click="playMusic">
-            <div class="greenbar" ref="runbar">
-              <span class="yuan" draggable="true"></span>
-            </div>
+    <img class="audio-img" :src="currentSong.imgUrl" alt="">
+    <div class="audio-play">
+        <div class="audio-play-info">
+            <span class="song-name">{{ currentSong.songName }}</span>
+            <span class="singer-name">{{ currentSong.singerName }}</span>
+        </div>
+      
+        <div class="bar">
+        <div class="progressbar" ref="runfatbar" @click="playMusic">
+          <div class="greenbar" ref="runbar">
+            <span class="yuan" draggable="true"></span>
           </div>
         </div>
       </div>
-      <div class="audio-time">
-          <span>{{ audio.currentTime }}</span>
-          <span>/</span>
-          <span>{{ audio.totalTime }}</span>
-      </div>
-      <div class="audio-flag">
-          <div class="iconfont iconcollection" @click="addLikeSong()" :disabled="isDisable"></div>
-          <div class="iconfont iconshengyin"></div>
-          <div class="iconfont iconziyuanldpi"></div>
-          <div class="iconfont iconlist-2-copy"></div>
-      </div>
-      <audio ref="audio" id="audio" :src="audio.audioSrc" @timeupdate="updateTime"></audio>
     </div>
+    <div class="audio-time">
+        <span>{{ audio.currentTime }}</span>
+        <span>/</span>
+        <span>{{ audio.totalTime }}</span>
+    </div>
+    <div class="audio-flag">
+        <div class="iconfont iconcollection" @click="addLikeSong()" :disabled="isDisable"></div>
+        <div class="iconfont iconshengyin"></div>
+        <div class="iconfont iconziyuanldpi"></div>
+        <div class="iconfont iconlist-2-copy"></div>
+    </div>
+    <audio ref="audio" id="audio" :src="currentSong.audioSrc" @timeupdate="updateTime"></audio>
+  </div>
 </div>
  
 </template>
 
 <script>
 import { setTimeout } from 'timers'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: player,
   props: {},
@@ -95,11 +54,6 @@ export default {
       currentLineNum: 0,
       currentShow: 'cd',
       playingLyric: '',
-      currentPage: 1,
-      // page: 1,
-      pageSize: 10,
-      pageNum: 1,
-      totalDataList: 0,
       songlistId: '',
       id: '',
       songid: '',
@@ -111,14 +65,7 @@ export default {
       lrc: '',
       list: [],
       iconPlay: 'iconbofang1',
-      dialogVisible: false,
-      // currentTime: '00:00',
-      // totalTime: '00:00',
       playing: false,
-      // audioSrc: ' ',
-      // imgUrl: '',
-      // songName: '',
-      // singerName: '',
       audio: {
         songId: '',
         audioSrc: ' ',
@@ -128,37 +75,21 @@ export default {
         currentTime: '00:00',
         totalTime: '00:00',
       },
-      sliderTime: 0,
-      volumeShow: false,
-      sliderVolume: true,
-      controlList: {
-        noDownload: true
-      },
       currentIndex:''
     }
   },
   computed: {
     ...mapGetters([
-      'playlist'
+      'playlist',
+      'currentSong'
     ])
   },
   watch: {
     currentSong(newSong, oldSong) {
       // 当列表没有歌曲时 直接return
-      if (!newSong.id) return
-
-      if (newSong === oldSong) {
-        return
-      }
-      // 防止歌词切换跳动
-      if (this.currentLyric) {
-        this.currentLyric.stop()
-      }
-      clearTimeout(this.timer)
-      this.timer = setTimeout(() => {
+      this.$nextTick( ()=> {
         this.$refs.audio.play()
-        this.getLyric()
-      }, 1000)
+      })
     },
     playing(newPlaying) {
       const audio = this.$refs.audio
@@ -168,7 +99,8 @@ export default {
     }
   },
   methods: {
-    
+    ...mapMutations({
+    }),
     // 添加喜欢的歌曲
     addLikeSong () {
        var _this = this
@@ -335,49 +267,6 @@ export default {
       const self = this
       self.timeDuration =  parseInt(self.$refs.audio.duration)
       // console.log(self.timeDuration)
-    },
-    handleSizeChange (size) {
-      var _this = this
-      _this.pageSize = size
-      _this.handlePageList()
-    },
-    handleCurrentChange (currentPage) {
-      var _this = this
-      _this.pageNum = currentPage
-      _this.list = []
-      _this.handlePageList()
-    },
-    handlePageList () {
-      this.loading = true
-      var _this = this
-      _this.$axios.get(_this.baseUrl + 'kd/getMusicSheetById/', {
-        params: {
-          songlistId: _this.$route.query.songlistId,
-          pageSize: _this.pageSize + 2,
-          pageNum: _this.pageNum
-        }
-      }).then(function (res) {
-        console.log(res)
-        for (let i = 0; i < res.data.payload.list.length; i++) {
-          _this.list.push({
-            id: res.data.payload.list[i].id,
-            number: i + 1,
-            name: res.data.payload.list[i].name,
-            songid: res.data.payload.list[i].songid,
-            singer: res.data.payload.list[i].singer,
-            pic: res.data.payload.list[i].pic,
-            url: res.data.payload.list[i].url,
-            time: Math.floor(res.data.payload.list[i].time / 60) + ":" + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
-            lrc: res.data.payload.list[i].lrc,
-            currentPage: res.data.payload.currentPage,
-            pageSize: res.data.payload.pageSize,
-            pageNum: res.data.payload.pageNum
-          })
-        }
-        _this.totalDataList = res.data.payload.total
-        _this.pageNum = res.data.payload
-        console.log( _this.list)
-      })
     },
     // 点击进度条事件
     playMusic(e){

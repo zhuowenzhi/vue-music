@@ -39,7 +39,7 @@
     :total="totalDataList">
     </el-pagination>
   </div> -->
-  <div class="audio">
+  <!-- <div class="audio">
     <div class="audio-btns">
         <span class="iconfont iconshangyishou" @click="prev()"></span>
         <span class="iconfont" :class="iconPlay" @click="togglePlay()"></span>
@@ -71,7 +71,7 @@
         <div class="iconfont iconlist-2-copy"></div>
     </div>
     <audio ref="audio" id="audio" :src="audio.audioSrc" @timeupdate="updateTime"></audio>
-  </div>
+  </div> -->
 </div>
  
 </template>

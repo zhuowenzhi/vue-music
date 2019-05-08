@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="audio">
     <div class="audio">
       <div class="audio-btns">
           <span class="iconfont iconshangyishou" @click="prev()"></span>
@@ -12,9 +12,6 @@
               <span class="song-name">{{ audio.songName }}</span>
               <span class="singer-name">{{ audio.singerName }}</span>
           </div>
-          <!-- <div class="audio-play-bar">
-            <div class="progress-btn"></div>
-          </div> -->
           <div class="bar">
           <div class="progressbar" ref="runfatbar" @click="playMusic">
             <div class="greenbar" ref="runbar">
@@ -42,17 +39,19 @@
 <script>
 import { setTimeout } from 'timers'
 import { mapState } from 'vuex'
-import { constants } from 'crypto';
+import {mapGetters} from 'vuex'
+import { constants } from 'crypto'
+import bus from '../common/js/bus.js'
 export default {
-  props: {
-    sendParams: {
-      type: Object
-    }
-  },
-  components: {
+  computed: {
+    ...mapGetters([
+      // playlist控制播放器的显示
+      'playlist',
+    ])
   },
   data () {
     return {
+      currentSongList: [],
       iconVolt: 'iconshengyin',
       currentLyric: null,
       id: '',
@@ -85,15 +84,87 @@ export default {
       currentIndex: 0
     }
   },
-  watch: {
-    playing(newPlaying) {
-      const audio = this.$refs.audio
-      this.$nextTick(() => {
-        newPlaying ? audio.play() : audio.pause()
+  watch () {
+    // playing(newPlaying) {
+    //   const audio = this.$refs.audio
+    //   this.$nextTick(() => {
+    //     newPlaying ? audio.play() : audio.pause()
+    //   })
+    // },
+    // 获取点击SongList传来的歌曲信息
+      bus.$on('selectItem', (index, song) => {
+        this.selectSong.index = index
+        const currentSong = JSON.parse(sessionStorage.getItem('currentSong'))
+        console.warn(currentSong)
+        this.audioInfo(currentSong)
+        this.selectSong.song = song
+        console.log(this.selectSong)
       })
-    }
   },
   methods: {
+    // 获取点击SongList传来的歌曲信息
+    getSelectItem () {
+      bus.$on('selectItem', (index, song) => {
+        this.selectSong.index = index
+        const currentSong = JSON.parse(sessionStorage.getItem('currentSong'))
+        console.warn(currentSong)
+        this.audioInfo(currentSong)
+        this.selectSong.song = song
+        console.log(this.selectSong)
+      })
+    },
+    // 初始化audio
+    initAudio () {
+      this.currentSongList = JSON.parse(sessionStorage.getItem('currentSongList'))
+      this.list = this.currentSongList 
+      let song = this.currentSongList[0]
+      sessionStorage.setItem('currentSong', JSON.stringify(song))
+      const currentSong = JSON.parse(sessionStorage.getItem('currentSong'))
+      console.log(currentSong)
+      this.audioInfo(currentSong)
+    },
+    // 将数据加入audio
+    audioInfo (song) {
+      var _this = this
+      _this.audio.audioSrc = song.url
+      _this.audio.imgUrl = song.pic
+      _this.audio.singerName = song.singer
+      _this.audio.songName = song.name
+      _this.audio.totalTime = Math.floor(song.time / 60) + ":" + (song.time % 60 / 100).toFixed(2).slice(-2)
+      _this.audio.currentTime = song.currentTime
+      _this.audio.songId = song.songid
+      _this.$refs.audio.src = song.audioSrc
+    },
+    play (index, song) {
+      index && (this.currentIndex = index)
+      console.log("currentIndex.currentIndex:" + this.currentIndex)
+      var _this = this
+      //发送日志1
+      _this.sendLog(_this.audio.songId, _this.audio.currentTime)
+      _this.audio.audioSrc = song.url
+      _this.audio.imgUrl = song.pic
+      _this.audio.singerName = song.singer
+      _this.audio.songName = song.name
+      _this.audio.totalTime = song.time
+      _this.audio.currentTime = _this.$refs.audio.currentTime
+      _this.audio.songId = song.songid
+      //发送数据到后台
+      _this.$axios.get(this.baseUrl + 'kd/getSongById/', {
+        params: {
+          userId: _this.$cookieStore.getCookie('userId'),
+          songId: song.songid
+        }
+      }).then(function (res) {
+         if (!_this.playing) {
+          _this.playing = !_this.playing
+          _this.iconPlay = 'iconbofang'
+        }
+        _this.$refs.audio.play()
+        
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
     // 切换静音
     changedMuted () {
       this.$refs.audio.muted = !this.$refs.audio.muted
@@ -301,6 +372,9 @@ export default {
   },
 
   mounted () {
+    setTimeout( ()=> {
+      this.initAudio()
+    },1000)
     this.addEventListeners()
     const music = this.$refs.audio  // 音频所在对象
     const musicBar = this.$refs.runbar  // 颜色进度条所在对象
@@ -369,6 +443,11 @@ export default {
 <style lang="scss" scoped>
 .iconfont {
   font-size: 20px;
+}
+#audio {
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
 }
 .audio-flag, .audio{
     display: flex;

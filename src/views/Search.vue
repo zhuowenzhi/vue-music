@@ -35,8 +35,8 @@
         <i slot="prefix" class="el-input__icon el-icon-search"  @click="get()"></i>
       </el-input>
     </div>
-    <div>
-      <el-table
+    <div >
+      <el-table v-show="list.length > 0"
         :data="list"
         stripe
         style="width: 100%">
@@ -64,7 +64,7 @@
           label="歌手">
         </el-table-column>
       </el-table>
-    <div class="index-pagination">
+    <div class="index-pagination" v-show="list.length > 0">
         <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -87,9 +87,6 @@
                 <span class="song-name">{{ audio.songName }}</span>
                 <span class="singer-name">{{ audio.singerName }}</span>
             </div>
-            <!-- <div class="audio-play-bar">
-              <div class="progress-btn"></div>
-            </div> -->
             <div class="bar">
             <div class="progressbar" ref="runfatbar" @click="playMusic">
               <div class="greenbar" ref="runbar">

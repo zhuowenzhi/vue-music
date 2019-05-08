@@ -46,13 +46,21 @@
 <script>
 import { setTimeout } from 'timers'
 import { mapState } from 'vuex'
+import { constants } from 'crypto';
 export default {
-  props: {},
+  props: {
+    sendParams: {
+      type: Object
+    },
+    params: {
+      type: Object
+    }
+  },
   components: {
   },
   data () {
     return {
-      isDisable: true,
+      iconVolt: 'iconshengyin',
       songReady: false,
       currentLyric: null,
       currentLineNum: 0,
@@ -83,15 +91,14 @@ export default {
         currentTime: '00:00',
         totalTime: '00:00',
       },
+      currentIndex: 0
     }
   },
-  watch: {
-  },
+
   methods: {
     selectItem (index, song) {
-      this.$emit('select', index, song)
+        this.$emit('select', index, song)
     },
-   
     handleSizeChange (size) {
       var _this = this
       _this.pageSize = size
@@ -106,14 +113,10 @@ export default {
     handlePageList () {
       this.loading = true
       var _this = this
-      _this.$axios.get(_this.baseUrl + 'kd/getMusicSheetById/', {
-        params: {
-          songlistId: _this.$route.query.songlistId,
-          pageSize: _this.pageSize + 2,
-          pageNum: _this.pageNum
-        }
+      _this.$axios.get(_this.sendParams.url, {
+        params: _this.params
       }).then(function (res) {
-        console.log(res)
+        _this.list = [];
         for (let i = 0; i < res.data.payload.list.length; i++) {
           _this.list.push({
             id: res.data.payload.list[i].id,
@@ -123,27 +126,33 @@ export default {
             singer: res.data.payload.list[i].singer,
             pic: res.data.payload.list[i].pic,
             url: res.data.payload.list[i].url,
-            time: Math.floor(res.data.payload.list[i].time / 60) + ":" + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
-            lrc: res.data.payload.list[i].lrc,
-            currentPage: res.data.payload.currentPage,
-            pageSize: res.data.payload.pageSize,
-            pageNum: res.data.payload.pageNum
+            time: Math.floor(res.data.payload.list[i].time / 60) + ':' + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
+            lrc: res.data.payload.list[i].lrc
           })
         }
         _this.totalDataList = res.data.payload.total
-        _this.pageNum = res.data.payload
-        console.log( _this.list)
+        _this.pageNum = res.data.payload.pageNum
+        //_this.audioSrc = _this.list[0].url
+        var song = _this.list[0]
+        _this.audio.audioSrc = song.url
+        _this.audio.imgUrl = song.pic
+        _this.audio.singerName = song.singer
+        _this.audio.songName = song.name
+        _this.audio.totalTime = song.time
+        _this.audio.currentTime = 0
+        _this.audio.songId = song.songid
       })
     },
-
   },
-  
+  created () {
+    this.handlePageList()
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.iconfont {
-  font-size: 20px;
-}
 
+.iconcollection {
+  color: red;
+}
 </style>

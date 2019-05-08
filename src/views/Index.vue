@@ -5,13 +5,13 @@
     </div>
   <div class="main">
     <Swiper></Swiper>
-    <div class="recommend-title">
-      <h1>热门推荐</h1>
+    <div class="recommend-title" v-show="list.length > 0">
+      <h1 v-show="list.length > 0">热门推荐</h1>
       <!-- <a href="" @click="()=>{this.$router.push('/songlist')}">更多</a> -->
     </div>
-    <div class="line"></div>
+    <div class="line" v-show="list.length > 0"></div>
     <Recommend :list="list"></Recommend>
-    <div class="index-pagination">
+    <div class="index-pagination" v-show="list.length > 0">
       <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -22,13 +22,14 @@
       :total="totalDataList">
       </el-pagination>
     </div>
-    <div class="recommend-title">
-      <h1>热门歌曲</h1>
+    <div class="recommend-title" v-show="list.length > 0">
+      <h1 v-show="list.length > 0">热门歌曲</h1>
     </div>
-    <div class="line"></div>
+    <div class="line" v-show="list.length > 0"></div>
     <div class="recommend-song-table">
       <!-- <RecommedSong/> -->
-      <SongTable :sendParams="sendParams"></SongTable>
+      <!-- <SongTable :send-params="sendParams" :params="params"></SongTable> -->
+      <SongList :send-params="sendParams" :params="params"></SongList>
     </div>
    </div>
   </div>
@@ -38,14 +39,16 @@
 import NavMenu from '../components/NavMenu.vue'
 import Swiper from '../components/Swiper.vue'
 import Recommend from '../components/Recommend.vue'
-import SongTable from '../components/SongTable.vue'
+// import SongTable from '../components/SongTable.vue'
+import SongList from '../components/SongList.vue'
 export default {
   name: 'Index',
   components: {
     NavMenu,
     Swiper,
     Recommend,
-    SongTable
+    // SongTable
+    SongList
   },
   data () {
     return {
@@ -64,13 +67,23 @@ export default {
       pageNum: 1,
       totalDataList: 0,
       tagId: 1,
+      selectSong: {
+        index: '',
+        song: ''
+      },
       sendParams: {
-        url: this.baseUrl + 'kd/getMusicSheetById/',
-        songlistId: '2204388891'
+        url: this.baseUrl + 'kd/recommendSong/',
+      },
+      params: {
+        userId: this.$cookieStore.getCookie('userId'),
+        pageNum: 1,
+        pageSize: 20
       }
     }
   },
   methods: {
+   
+    // 热门推荐数据
     get () {
       var _this = this
       _this.$axios.get(this.baseUrl + 'kd/getSongSheetByTagId/', {
@@ -118,7 +131,6 @@ export default {
             songlistdescription: res.data.payload.list[i].songlistdescription,
             tagbody: res.data.payload.list[i].tagbody
           })
-          _this.pageSize = res.data.payload.pageSize
           console.log(_this.pageSize)
           _this.pageNum = res.data.payload.pageNum
         }
@@ -133,7 +145,7 @@ export default {
     this.handlePageList()
   },
   mounted () {
-    //this.get()
+    // this.selectItem()
   },
   computed: {
   }

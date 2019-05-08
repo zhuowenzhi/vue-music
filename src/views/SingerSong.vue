@@ -11,7 +11,8 @@
              <img :src="picurl">
            </div>
            <h1>歌曲列表</h1>
-           <SingerTable :sendParams="sendParams"></SingerTable>
+          <!-- <SongTable :send-params="sendParams" :params="params"></SongTable> -->
+          <SongList :send-params="sendParams" :params="params"></SongList>
         </div>
       </div>
   </div>
@@ -19,16 +20,16 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-import SingerTable from '../components/SingerTable.vue'
-import Audio from '../components/Audio.vue'
+// import SongTable from '../components/SongTable.vue'
+import SongList from '../components/SongList.vue'
 import { setTimeout } from 'timers'
 export default {
   name: 'SingerSong',
   show: false,
   components: {
     NavMenu,
-    SingerTable,
-    Audio
+    // SongTable,
+    SongList
   },
   data () {
     return {
@@ -38,7 +39,11 @@ export default {
       picurl : '',
       sendParams: {
         url: this.baseUrl + '/rank/getAllSongBySingerId/',
+      },
+      params: {
         singerId: this.$route.query.singerId,
+        pageSize: 20,
+        pageNum: 1
       }
     }
   },

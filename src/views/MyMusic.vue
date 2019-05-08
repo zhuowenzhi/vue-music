@@ -37,8 +37,8 @@
              </div>
            </div>
            <h1>歌曲列表</h1>
-           <SongTable :sendParams="sendParams"></SongTable>
-
+           <!-- <SongTable :sendParams="sendParams" :params="params"></SongTable> -->
+            <SongList :sendParams="sendParams" :params="params"></SongList>
         </div>
       </div>
   </div>
@@ -46,16 +46,16 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-import SongTable from '../components/SongTable.vue'
-import Audio from '../components/Audio.vue'
+// import SongTable from '../components/SongTable.vue'
 import { setTimeout } from 'timers'
+import SongList from '../components/SongList.vue'
 export default {
   name: 'MyMusic',
   show: false,
   components: {
     NavMenu,
-    SongTable,
-    Audio
+    // SongTable,
+    SongList
   },
   data () {
     return {
@@ -71,15 +71,13 @@ export default {
       sendParams: {
         url: this.baseUrl + 'kd/getMusicSheetById/',
         songlistId: this.$route.query.songlistId,
-        // params: {
-        // songlistId: this.$route.query.songlistId,
-        // pageSize: this.pageSize + 2,
-        // pageNum: this.pageNum
-        // }
+      },
+      params: {
+        songlistId: this.$route.query.songlistId,
+        pageSize: 20,
+        pageNum: 1
       }
     }
-  },
-  mounted : {
   },
   methods: {
     getSongListInfo () {
@@ -334,54 +332,4 @@ export default {
     }
   }
 }
-
-// .audio-flag, .audio{
-//     display: flex;
-//     display: -webkit-flex;
-//     align-items: center;
-// }
-// .audio {
-//     height: 70px;
-//     width: 100%;
-//     position: fixed;
-//     bottom: 0;
-//     left: 0;
-//     background-color:rgba(0, 0, 0, 0.8);
-//     color: #fff;
-// }
-// .audio > div {
-//     padding: 15px;
-// }
-// .audio-btns span {
-//     font-size: 30px;
-//     padding: 5px;
-// }
-// .audio-img {
-//     width: 40px;
-//     height: 40px;
-//     border: 1px #ccc solid;
-// }
-// .audio-play {
-//     flex-grow: 1;
-// }
-// .audio-play-bar {
-//     margin: 5px auto;
-//     height: 10px;
-//     border: 1px #ccc solid;
-//     border-radius: 5px;
-// }
-// .audio-play-info span{
-//     padding: 5px;
-// }
-// .audio-flag > div {
-//     padding: 5px;
-//     font-size: 18px;
-// }
-// .song-name {
-//     font-size: 16px;
-// }
-// .singer-name {
-//     font-size: 14px;
-//     color: #ccc;
-// }
 </style>

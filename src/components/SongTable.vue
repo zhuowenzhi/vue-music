@@ -1,6 +1,7 @@
 <template>
 <div>
-   <el-table
+   <el-table 
+    v-show="list.length > 0"
     :data="list"
     stripe
     style="width: 100%">
@@ -28,7 +29,7 @@
       label="歌手">
     </el-table-column>
   </el-table>
-  <div class="index-pagination">
+  <div class="index-pagination" v-show="list.length > 0">
       <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -39,7 +40,7 @@
       :total="totalDataList">
       </el-pagination>
     </div>
-    <div class="audio">
+    <div class="audio" v-show="list.length > 0">
       <div class="audio-btns">
           <span class="iconfont iconshangyishou" @click="prev()"></span>
           <span class="iconfont" :class="iconPlay" @click="togglePlay()"></span>
@@ -70,7 +71,7 @@
           <div class="iconfont iconziyuanldpi"></div>
           <div class="iconfont iconlist-2-copy"></div>
       </div>
-      <audio ref="audio" id="audio" :src="audio.audioSrc" @timeupdate="updateTime"></audio>
+      <audio  ref="audio" id="audio" :src="audio.audioSrc" @timeupdate="updateTime"></audio>
     </div>
 </div>
  
@@ -83,6 +84,9 @@ import { constants } from 'crypto';
 export default {
   props: {
     sendParams: {
+      type: Object
+    },
+    params: {
       type: Object
     }
   },
@@ -162,7 +166,7 @@ export default {
       var _this = this
       setTimeout( ()=> {
         _this.currentIndex = 0
-        console.log('_this.list[0].id' + _this.list[0].id)
+        //console.log('_this.list[0].id' + _this.list[0].id)
          _this.$axios.get(this.baseUrl + 'kd/getSongById/', {
         params: {
           userId: _this.$cookieStore.getCookie('userId'),
@@ -333,6 +337,7 @@ export default {
     },
     loop () {
       this.$refs.audio.currentTime = 0
+      alert("播放完毕")
       this.$refs.audio.play()
       // 循环播放 歌词回到开始的时候
       if (this.currentLyric) {
@@ -390,13 +395,9 @@ export default {
       this.loading = true
       var _this = this
       _this.$axios.get(_this.sendParams.url, {
-        // params: _this.sendParams.params
-        params: {
-          songlistId: _this.sendParams.songlistId,
-          pageSize: 20,
-          pageNum: _this.pageNum
-        }
+        params: _this.params
       }).then(function (res) {
+        _this.list = [];
         for (let i = 0; i < res.data.payload.list.length; i++) {
           _this.list.push({
             id: res.data.payload.list[i].id,
@@ -412,6 +413,15 @@ export default {
         }
         _this.totalDataList = res.data.payload.total
         _this.pageNum = res.data.payload.pageNum
+        //_this.audioSrc = _this.list[0].url
+        var song = _this.list[0]
+        _this.audio.audioSrc = song.url
+        _this.audio.imgUrl = song.pic
+        _this.audio.singerName = song.singer
+        _this.audio.songName = song.name
+        _this.audio.totalTime = song.time
+        _this.audio.currentTime = 0
+        _this.audio.songId = song.songid
       })
     },
     // 点击进度条事件
