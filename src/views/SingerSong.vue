@@ -11,7 +11,6 @@
              <img :src="picurl">
            </div>
            <h1>歌曲列表</h1>
-          <!-- <SongTable :send-params="sendParams" :params="params"></SongTable> -->
           <SongList :send-params="sendParams" :params="params"></SongList>
         </div>
       </div>
@@ -20,7 +19,6 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-// import SongTable from '../components/SongTable.vue'
 import SongList from '../components/SongList.vue'
 import { setTimeout } from 'timers'
 export default {

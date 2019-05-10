@@ -125,61 +125,6 @@ export default {
     get () {
       this.params.songName = this.searchName
     },
-    // selectItem (index, song) {
-    //   localStorage.setItem('currentSong', JSON.stringify(song))
-    //   const currentSong = JSON.parse(localStorage.getItem('currentSong'))
-    //   bus.$emit('selectItem', index, song)
-    // },
-    // handleSizeChange (size) {
-    //   var _this = this
-    //   _this.pageSize = size
-    //   _this.handlePageList()
-    // },
-    // handleCurrentChange (currentPage) {
-    //   var _this = this
-    //   _this.pageNum = currentPage
-    //   _this.list = []
-    //   _this.handlePageList()
-    // },
-    // handlePageList () {
-    //   this.loading = true
-    //   var _this = this
-    //   _this.$axios.get(this.baseUrl + 'kd/searchSong/', {
-    //     params: {
-    //       userId: _this.$cookieStore.getCookie('userId'),
-    //       pageNum: _this.pageNum,
-    //       pageSize: _this.pageSize,
-    //       songName: _this.searchName
-    //     }
-    //   }).then(function (res) {
-    //     console.log(res)
-    //     if (res.data.payload.list.length == 0 ) {
-    //       _this.dialogVisible = true
-    //     }
-
-    //     for (let i = 0; i < res.data.payload.list.length; i++) {
-    //       _this.list.push({
-    //         id: res.data.payload.list[i].id,
-    //         number: i + 1,
-    //         songid: res.data.payload.list[i].songid,
-    //         name: res.data.payload.list[i].name,
-    //         singer: res.data.payload.list[i].singer,
-    //         pic: res.data.payload.list[i].pic,
-    //         url: res.data.payload.list[i].url,
-    //         time: Math.floor(res.data.payload.list[i].time / 60) + ":" + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
-    //         lrc: res.data.payload.list[i].lrc
-    //       })
-          
-    //     }
-    //     _this.totalDataList = res.data.payload.total
-    //     _this.pageSize =  res.data.payload.pageSize
-    //     _this.pageNum =  res.data.payload.pageNum
-    //     // _this.handlePageList()
-    //     _this.initAudio ()
-    //   }, function () {
-    //     console.log('请求失败处理')
-    //   })
-    // },
      toSearch () {
       this.$router.push('/search')
     },
