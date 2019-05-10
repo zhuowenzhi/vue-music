@@ -85,8 +85,6 @@ export default {
       },
     }
   },
-  watch: {
-  },
   methods: {
     selectItem (index, song) {
       this.$emit('select', index, song)

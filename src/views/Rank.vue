@@ -16,18 +16,7 @@
         <div class="recommend-title">
         <h1>{{rankName}}</h1>
         </div>
-        <RankTable :list="list"></RankTable>
-         <div class="index-pagination">
-          <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :page-sizes="[5, 10, 20, 40]"
-          layout="total, prev, pager, next, jumper"
-          :total="totalDataList">
-          </el-pagination>
-      </div>
+      <SongList :send-params="sendParams" :params="params"></SongList>
       </div>
     </div>
   </div>
@@ -35,13 +24,14 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-import RankTable from '../components/RankTable.vue'
-import { constants } from 'crypto';
+import SongList from '../components/SongList.vue'
+import { constants } from 'crypto'
+import bus from '../common/js/bus.js'
 export default {
   name: 'Singer',
   components: {
     NavMenu,
-    RankTable
+    SongList
   },
   data () {
     return {
@@ -57,98 +47,40 @@ export default {
       pageNum: 1,
       totalDataList: 0,
       tagId: 1,
+      sendParams: {
+        url: this.baseUrl + 'rank/getRankListById/',
+      },
+      params: {
+        rankId: 0,
+        pageNum: 1,
+        pageSize: 20
+      }
     }
   },
   methods: {
     // 获取左侧栏所有排行榜
-    get () {
+    getAllRank () {
       var _this = this
       _this.$axios.get(this.baseUrl + 'rank/getRankList/').then(function (res) {
+        console.log("排行榜")
+        console.log(res.data.payload)
         _this.rankList = res.data.payload
       }, function () {
         console.log('请求失败处理')
       })
     },
     // 点击左侧栏获取排行榜歌曲
-    getRankId (id, name) {
+     getRankId (id, name) {
       console.log(id)
-       var _this = this
-      _this.rankName = name
-      _this
-       _this.$axios.get(_this.baseUrl + 'rank/getRankListById/', {
-        params: {
-          rankId: id,
-          pageNum: _this.pageNum,
-          pageSize: 20
-        }
-      }).then(function (res) {
-        console.log(res)
-        _this.list = []
-        for (let i = 0; i < res.data.payload.list.length; i++) {
-          _this.list.push({
-            id: res.data.payload.list[i].id,
-            number: i + 1,
-            name: res.data.payload.list[i].name,
-            songid: res.data.payload.list[i].songid,
-            singer: res.data.payload.list[i].singer,
-            pic: res.data.payload.list[i].pic,
-            url: res.data.payload.list[i].url,
-            time: Math.floor(res.data.payload.list[i].time / 60) + ':' + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
-            lrc: res.data.payload.list[i].lrc
-          })
-        }
-        _this.pageSize = res.data.payload.pageSize
-        _this.pageNum = res.data.payload.pageNum
-        _this.totalDataList = res.data.payload.total
-      }, function () {
-        console.log('请求失败处理')
-      })
-    },
-    // 传递分页的list数据
-      handleSizeChange (size) {
-      var _this = this
-      _this.pageSize = size
-      _this.handlePageList()
-    },
-    handleCurrentChange (currentPage) {
-      var _this = this
-      _this.pageNum = currentPage
-      _this.list = []
-      _this.handlePageList()
-    },
-    handlePageList () {
-      this.loading = true
-      var _this = this
-      
-      _this.$axios.get(this.baseUrl + 'rank/getRankListById', {
-        params: {
-          rankId: 1,
-          pageSize: 20,
-          pageNum: _this.pageNum
-        }
-      }).then(function (res) {
-        for (let i = 0; i < res.data.payload.list.length; i++) {
-          _this.list.push({
-            id: res.data.payload.list[i].id,
-            number: i + 1,
-            name: res.data.payload.list[i].name,
-            songid: res.data.payload.list[i].songid,
-            singer: res.data.payload.list[i].singer,
-            pic: res.data.payload.list[i].pic,
-            url: res.data.payload.list[i].url,
-            time: Math.floor(res.data.payload.list[i].time / 60) + ':' + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
-            lrc: res.data.payload.list[i].lrc
-          })
-        }
-        _this.totalDataList = res.data.payload.total
-        _this.pageNum = res.data.payload.pageNum
-      })
-    },
+      this.rankName = name
+      this.params.rankId = id
+      console.log('getRankId' + this.params.rankId)
+    }
   },
   mounted () {
     var _this = this
-    _this.get()
-    _this.handlePageList()
+    _this.getAllRank()
+    // _this.handlePageList()
   },
 }
 </script>
@@ -199,7 +131,7 @@ export default {
 }
 .main {
   width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 200px;
 }
 
 .recommend-title {

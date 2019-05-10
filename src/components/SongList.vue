@@ -40,6 +40,22 @@
       :total="totalDataList">
       </el-pagination>
     </div>
+    <div class="song-list" v-show="showList">
+      <ul class="song-list-ul" v-for="(song, index) in currentSongList" :key="index">
+        <li><span class="song-list-li-index">{{index + 1}}</span><span class="iconfont iconbofang1" @click="selectItem(index, song)"></span><span>{{song.name}}</span></li>
+      </ul>
+    </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>对不起，您搜索的歌曲不存在！！</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
 </div>
  
 </template>
@@ -49,7 +65,6 @@ import { setTimeout } from 'timers'
 import { mapState } from 'vuex'
 import { constants } from 'crypto'
 import bus from '../common/js/bus.js'
-import { getSongList } from '../api/recommend'
 export default {
   props: {
     sendParams: {
@@ -61,46 +76,59 @@ export default {
   },
   data () {
     return {
+      dialogVisible: false,
       totalDataList: 0,
       currentPage: 1,
       pageSize: 10,
       pageNum: 1,
       list: [],
       iconPlay: 'iconbofang1',
-      currentSongList: []
+      currentSongList: [],
+      showList: false,
+      paramsData: this.params,
     }
   },
   created () {
     this.handlePageList()
-    this._getSongList()
   },
-  methods: {
-    selectItem (index, song) {
-      console.log("SongList--------------currentSong................")
-      console.log(index)
-      console.log(song)
-      sessionStorage.setItem('currentSong', JSON.stringify(song))
-      const currentSong = JSON.parse(sessionStorage.getItem('currentSong'))
-      console.log(currentSong)
-      console.log("SongList--------------currentSong................")
-      bus.$emit('selectItem', index, song)
+  watch: {
+    'params.rankId' () {
+      console.log('监听不同排行榜书籍')
+      console.log(this.params.rankId)
+      this.handlePageList()
     },
-    _getSongList () {
-      getSongList().then((res) => {
-        console.log(">>>>>>>>>>>getTopList>>>>>>>>>>>>")
-        console.log(res)
-      })
+    'params.songName' () {
+      console.log('监听不同搜索歌曲')
+      console.log(this.params.songName)
+      this.handlePageList()
+    }
+  },
+ 
+  methods: {
+     // 搜索无结果时
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
+    // 点击列表播放按钮
+    selectItem (index, song) {
+      localStorage.setItem('currentSong', JSON.stringify(song))
+      const currentSong = JSON.parse(localStorage.getItem('currentSong'))
+      bus.$emit('selectItem', index, song)
     },
     // 分页的条数
     handleSizeChange (size) {
       var _this = this
-      _this.pageSize = size
+      _this.params.pageNum = size
       _this.handlePageList()
     },
     // 分页的当前页码
     handleCurrentChange (currentPage) {
       var _this = this
-      _this.pageNum = currentPage
+      _this.params.pageNum = currentPage
       _this.list = []
       _this.currentSongList = []
       _this.handlePageList()
@@ -111,38 +139,74 @@ export default {
       this.loading = true
       var _this = this
       _this.$axios.get(_this.sendParams.url, {
-        params: _this.params
+        params: _this.paramsData
       }).then(function (res) {
-        let songList = res.data.payload.list
-        sessionStorage.setItem('currentSongList', JSON.stringify(songList))
-        _this.currentSongList = JSON.parse(sessionStorage.getItem('currentSongList'))
-        console.log("要播放的列表_this.currentSongList")
-        console.log(_this.currentSongList)
-        _this.list = []
-        for (let i = 0; i < _this.currentSongList.length; i++) {
-          _this.list.push({
-            id: _this.currentSongList[i].id,
+        let songList = []
+        if (res.data.payload.list.length == 0 ) {
+          _this.dialogVisible = true
+        }
+        for (let i = 0; i < res.data.payload.list.length; i++) {
+          songList.push({
+            id: res.data.payload.list[i].id,
             number: i + 1,
-            name: _this.currentSongList[i].name,
-            songid: _this.currentSongList[i].songid,
-            singer: _this.currentSongList[i].singer,
-            pic: _this.currentSongList[i].pic,
-            url: _this.currentSongList[i].url,
-            time: Math.floor(_this.currentSongList[i].time / 60) + ':' + (_this.currentSongList[i].time % 60 / 100).toFixed(2).slice(-2),
-            lrc: _this.currentSongList[i].lrc
+            name: res.data.payload.list[i].name,
+            songid: res.data.payload.list[i].songid,
+            singer: res.data.payload.list[i].singer,
+            pic: res.data.payload.list[i].pic,
+            url: res.data.payload.list[i].url,
+            time: Math.floor(res.data.payload.list[i].time / 60) + ':' + (res.data.payload.list[i].time % 60 / 100).toFixed(2).slice(-2),
+            lrc: res.data.payload.list[i].lrc
           })
         }
+
+        localStorage.setItem('currentSongList', JSON.stringify(songList))
+        _this.currentSongList = JSON.parse(localStorage.getItem('currentSongList'))
+        console.log("要播放的列表_this.currentSongList")
+         // 开始时间
+        var start = new Date().getTime()
+        console.log(_this.currentSongList)
+        _this.list = []
+        _this.list = _this.currentSongList
+        // 结束时间
+        var end = new Date().getTime()
+        console.log('end - start')
+        console.log(end - start)
         _this.totalDataList = res.data.payload.total
-        _this.pageNum = res.data.payload.pageNum
+        _this.params.pageNum = res.data.payload.pageNum
       })
     }
   },
- 
+  mounted () {
+    bus.$on('showList', () => {
+     this.showList = !this.showList
+    })
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .iconfont {
+  font-size: 20px;
+}
+.song-list {
+  width: 400px;
+  position: fixed;
+  bottom: 70px;
+  right: 0;
+  background-color:rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+.song-list-ul {
+  padding: 10px;
+}
+
+.song-list-ul li {
+  margin: 2px 0;
+}
+.song-list-ul li span {
+  padding: 0 8px;
+}
+.song-list-li-index {
   font-size: 20px;
 }
 </style>

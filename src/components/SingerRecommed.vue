@@ -4,11 +4,6 @@
         <div v-for="(item, index) in list" ref="item.id" @click="getId(item.id)" :key="index" class="main-row-col">
             <div class="main-row-col-img">
                 <img :src="item.picurl" alt="">
-                <!-- <div class="main-row-col-listeners">
-                  <i class="el-icon-service"></i>
-                  <span>{{item.songlistplaycount}}</span>
-                  <i class="el-icon-caret-right"></i>
-                </div> -->
             </div>
             <span class="main-row-col-span">{{item.name}}</span>
         </div>
@@ -56,9 +51,6 @@ export default {
         console.log(error)
       })
     }
-  },
-  created () {
-    this.Bus.$emit('txt', this.value)
   }
 }
 </script>

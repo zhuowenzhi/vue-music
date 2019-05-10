@@ -85,7 +85,7 @@ export default {
 .main {
   width: 1080px;
   display:flex;
-  margin: 0 auto 100px;
+  margin: 0 auto 200px;
 }
 .main-right {
   flex-grow: 1;

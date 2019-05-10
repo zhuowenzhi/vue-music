@@ -111,16 +111,9 @@ export default {
       console.log('winWidth' + winWidth)
       let rem = winWidth / 375 * defaultRem
       return rem
-    },
-    getParams () {
-      console.log(this.$route.query.songlistId)
-      console.log("///////////////////////////////this.sendParams")
-      console.log(this.sendParams)
     }
   },
   created () {
-    // this.handlePageList()
-    this.getParams()
     this.getSongListInfo ()
   },
   watch: {

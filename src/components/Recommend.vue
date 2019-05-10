@@ -57,9 +57,6 @@ export default {
       })
     }
   },
-  created () {
-    this.Bus.$emit('txt', this.value)
-  }
 }
 </script>
 

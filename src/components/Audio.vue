@@ -28,10 +28,11 @@
       <div class="audio-flag">
           <div class="iconfont iconshoucang" @click="addLikeSong()"></div>
           <div class="iconfont" :class="iconVolt" @click="changedMuted()"></div>
-          <div class="iconfont iconziyuanldpi"></div>
-          <div class="iconfont iconlist-2-copy"></div>
+          <!-- <div class="iconfont iconziyuanldpi"></div> -->
+          <div class="iconfont iconlist-2-copy" @click="showList()">
+          </div>
       </div>
-      <audio ref="audio" id="audio" :src="audio.audioSrc" @timeupdate="updateTime"></audio>
+      <audio @ended="loop()" ref="audio" id="audio" :src="audio.audioSrc" @timeupdate="updateTime"></audio>
     </div>
 </div>
 </template>
@@ -52,6 +53,7 @@ export default {
   data () {
     return {
       currentSongList: [],
+      currentList: [],
       iconVolt: 'iconshengyin',
       currentLyric: null,
       id: '',
@@ -84,42 +86,21 @@ export default {
       currentIndex: 0
     }
   },
-  watch () {
-    // playing(newPlaying) {
-    //   const audio = this.$refs.audio
-    //   this.$nextTick(() => {
-    //     newPlaying ? audio.play() : audio.pause()
-    //   })
-    // },
-    // 获取点击SongList传来的歌曲信息
-      bus.$on('selectItem', (index, song) => {
-        this.selectSong.index = index
-        const currentSong = JSON.parse(sessionStorage.getItem('currentSong'))
-        console.warn(currentSong)
-        this.audioInfo(currentSong)
-        this.selectSong.song = song
-        console.log(this.selectSong)
-      })
-  },
   methods: {
-    // 获取点击SongList传来的歌曲信息
-    getSelectItem () {
-      bus.$on('selectItem', (index, song) => {
-        this.selectSong.index = index
-        const currentSong = JSON.parse(sessionStorage.getItem('currentSong'))
-        console.warn(currentSong)
-        this.audioInfo(currentSong)
-        this.selectSong.song = song
-        console.log(this.selectSong)
-      })
+    // 歌曲列表显示隐藏
+    showList () {
+      bus.$emit('showList')
     },
     // 初始化audio
     initAudio () {
-      this.currentSongList = JSON.parse(sessionStorage.getItem('currentSongList'))
-      this.list = this.currentSongList 
-      let song = this.currentSongList[0]
-      sessionStorage.setItem('currentSong', JSON.stringify(song))
-      const currentSong = JSON.parse(sessionStorage.getItem('currentSong'))
+      console.log('初始化audio')
+      this.currentList = JSON.parse(localStorage.getItem('currentSongList'))
+      console.log(this.currentList)
+      this.list = this.currentList 
+      let song = this.currentList[0]
+      
+      localStorage.setItem('currentSong', JSON.stringify(song))
+      const currentSong = JSON.parse(localStorage.getItem('currentSong'))
       console.log(currentSong)
       this.audioInfo(currentSong)
     },
@@ -315,14 +296,11 @@ export default {
       console.log(error)
     })
     },
-    loop() {
+    loop () {
+      console.log("loop")
       this.$refs.audio.currentTime = 0
       this.$refs.audio.play()
 
-      // 循环播放 歌词回到开始的时候
-      if (this.currentLyric) {
-        this.currentLyric.seek(0)
-      }
     },
     togglePlay () {
       if (!this.playing) {
@@ -372,9 +350,21 @@ export default {
   },
 
   mounted () {
+    bus.$on('selectItem', (index, song) => {
+      this.list = JSON.parse(localStorage.getItem('currentSongList'))
+      console.log("要播放的列表_this.list")
+      console.log(this.list)
+      this.play(index, song)
+    }),
     setTimeout( ()=> {
+      // 开始时间
+      var start = new Date().getTime()
       this.initAudio()
-    },1000)
+      // 结束时间
+      var end = new Date().getTime()
+      console.log('end - start')
+      console.log(end - start)
+    },10000)
     this.addEventListeners()
     const music = this.$refs.audio  // 音频所在对象
     const musicBar = this.$refs.runbar  // 颜色进度条所在对象
@@ -540,4 +530,5 @@ export default {
 .iconcollection {
   color: red;
 }
+
 </style>

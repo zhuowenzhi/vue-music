@@ -191,7 +191,7 @@ export default {
 }
 .main {
   width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 200px;
   position: relative;
 }
 .recommend-title {

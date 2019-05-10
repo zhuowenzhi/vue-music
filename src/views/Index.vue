@@ -82,7 +82,6 @@ export default {
     }
   },
   methods: {
-   
     // 热门推荐数据
     get () {
       var _this = this
@@ -143,11 +142,6 @@ export default {
   },
   created () {
     this.handlePageList()
-  },
-  mounted () {
-    // this.selectItem()
-  },
-  computed: {
   }
 }
 </script>
@@ -162,7 +156,7 @@ export default {
 }
 .main {
   width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 200px;
 }
 
 .recommend-title {
