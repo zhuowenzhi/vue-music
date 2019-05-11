@@ -49,13 +49,13 @@ export default {
   },
   data () {
     return {
-      id: '',
+      id: 1001,
       name: '',
       picurl: '',
       briefdesc: '',
       list: [],
       singerType: [],
-      typeName: '',
+      typeName: '华语男歌手',
       currentPage: 1,
       pageSize: 12,
       pageNum: 1,
@@ -64,6 +64,11 @@ export default {
       sendParams: {
         url: this.baseUrl + 'kd/getMusicSheetById/',
         songlistId: '2204388891'
+      },
+      params: {
+        typeId: 1001,
+        pageSize: 20,
+        pageNum: 1
       }
     }
   },
@@ -81,23 +86,9 @@ export default {
     getSingerId (id, name) {
       console.log(id)
        var _this = this
+       _this.params.typeId = id
       _this.typeName = name
-      _this.$axios.get(_this.baseUrl + 'rank/getAllSingerByTypeId', {
-        params: {
-          typeId: id,
-          pageNum: _this.pageNum,
-          pageSize: _this.pageSize
-        }
-      }).then(function (res) {
-        console.log(res)
-        _this.list = []
-        _this.list = res.data.payload.list
-        _this.pageSize = res.data.payload.pageSize
-        _this.pageNum = res.data.payload.pageNum
-        _this.totalDataList = res.data.payload.total
-      }, function () {
-        console.log('请求失败处理')
-      })
+      _this.handlePageList()
     },
     handleSizeChange (size) {
       var _this = this
@@ -114,11 +105,7 @@ export default {
       this.loading = true
       var _this = this
       _this.$axios.get(this.baseUrl + 'rank/getAllSingerByTypeId/', {
-        params: {
-          typeId: '1002',
-          pageSize: _this.pageSize,
-          pageNum: _this.pageNum
-        }
+        params: _this.params
       }).then(function (res) {
         _this.list = res.data.payload.list
         _this.pageSize = res.data.payload.pageSize

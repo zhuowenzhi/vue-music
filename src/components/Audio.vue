@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     // 点击收藏歌曲
-    open() {
+    open () {
       this.$alert('收藏歌曲成功', '收藏歌曲', {
         confirmButtonText: '确定',
         callback: action => {
@@ -98,6 +98,10 @@ export default {
           });
         }
       });
+    },
+    // 判断是不是最后一首歌或者第一首歌
+    openInfo () {
+      this.$message('这是一条消息提示');
     },
     // 歌曲列表显示隐藏
     showList () {
@@ -185,7 +189,7 @@ export default {
       })
     },
     // 点击发送播放时间
-    sendLog(songid, currentTime) {
+    sendLog (songid, currentTime) {
       var _this = this
       var min = currentTime.split(':')[0]
       var sec = currentTime.split(':')[1]
@@ -202,7 +206,7 @@ export default {
       })
     },
     // 上一首
-    prev() {
+    prev () {
       var _this = this
       if (_this.list.length === 1) {
         _this.loop()
@@ -215,7 +219,7 @@ export default {
         }
         let _audio = _this.$refs.audio;
         let prevTime = _audio.currentTime;
-        console.log('上一首播放时长'+prevTime);
+        console.log('上一首播放时长' + prevTime);
 
         console.log(_this.list[index].url)
         _this.audio.audioSrc = _this.list[index].url
@@ -232,7 +236,7 @@ export default {
       }
       console.log('next finish')
     },
-    next() {
+    next () {
       var _this = this
       console.log('next start')
       console.log( _this.list)
@@ -270,10 +274,10 @@ export default {
       }
       console.log('next finish')
     },
-    up_play(index,song) {
+    up_play (index, song) {
       this.next_play(--index, song)
     },
-    next_play(index,song ){
+    next_play (index, song) {
       // 现在跑的是next逻辑
       index && (this.currentIndex = index)
       console.log("currentIndex.currentIndex:" + this.currentIndex)
@@ -313,7 +317,6 @@ export default {
       console.log("loop")
       this.$refs.audio.currentTime = 0
       this.$refs.audio.play()
-
     },
     togglePlay () {
       if (!this.playing) {

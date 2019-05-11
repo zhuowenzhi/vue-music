@@ -1,15 +1,26 @@
 <template>
   <div id="app">
-    <Audio></Audio>
-    <router-view/>
+    <router-view v-on:public_audio="public_audio"></router-view>
+    <Audio v-if="audio_show"></Audio>
+    <!-- <router-view/> -->
   </div>
 </template>
 
 <script>
 import Audio from './components/Audio.vue'
 export default {
+  data () {
+    return {
+      audio_show: true
+    }
+  },
   components: {
     Audio
+  },
+  methods: {
+    public_audio: function (bool) {
+      this.audio_show = bool
+    }
   }
 }
 </script>

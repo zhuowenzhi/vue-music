@@ -31,49 +31,6 @@
       </el-input>
     </div>
      <SongList :send-params="sendParams" :params="params"></SongList>
-    <!-- <div>
-      <el-table v-show="list.length > 0"
-        :data="list"
-        stripe
-        style="width: 100%">
-        <el-table-column 
-          prop="number"
-          label=""
-          width="40">
-        </el-table-column>
-        <el-table-column width="40">
-          <template scope="song">
-            <span class="iconfont iconbofang1" @click="selectItem(song.$index, song.row)"></span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="歌曲标题"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="time"
-          label="时长">
-        </el-table-column>
-        <el-table-column
-          prop="singer"
-          label="歌手">
-        </el-table-column>
-      </el-table>
-    <div class="index-pagination">
-        <el-pagination
-        v-show="list.length > 0"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :page-sizes="[5, 10, 20, 40]"
-        layout="total, prev, pager, next, jumper"
-        :total="totalDataList">
-        </el-pagination>
-      </div>
-    </div> -->
-    
   </div>
 </template>
 
@@ -149,6 +106,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search {
+  margin: 0 auto 150px;
+}
 .search-input {
   width: 80%;
   margin: 40px auto 80px;
@@ -159,94 +119,11 @@ export default {
 .el-table {
   bottom: 70px;
 }
-.audio-flag, .audio{
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-}
-.audio {
-    height: 70px;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color:rgba(0, 0, 0, 0.8);
-    color: #fff;
-}
-.audio > div {
-    padding: 15px;
-}
-.audio-btns span {
-    font-size: 30px;
-    padding: 5px;
-}
-.audio-img {
-    width: 40px;
-    height: 40px;
-    border: 1px #ccc solid;
-}
-.audio-play {
-    flex-grow: 1;
-}
-.audio-play-bar {
-    margin: 5px auto;
-    height: 10px;
-    border: 1px #ccc solid;
-    border-radius: 5px;
-}
-.audio-play-info span{
-    padding: 5px;
-}
-.audio-flag > div {
-    padding: 5px;
-    font-size: 18px;
-}
+
 .song-name {
     font-size: 16px;
 }
-.singer-name {
-    font-size: 14px;
-    color: #ccc;
-}
-.progress-btn {
-    position : relative;
-    top: -0.18rem;
-    box-sizing : border-box;
-    width : 1rem;
-    height : 1rem;
-    border : 0.06rem solid #ccc;
-    border-radius : 50%;
-    background :  #fff;
-}
 
-.bar{
-    width:100%;
-    height:30px;
-    line-height:30px;
-}
-.bar .progressbar{
-    width: 100%;
-    height:10px;
-    background-color: #999999;
-    margin-top:10px;
-    border-radius:30px;
-    position: relative;
-}
-.bar .greenbar {
-    width: 0%;
-    height:10px;
-    border-radius:30px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-}
-.bar .greenbar .yuan{
-    display: inline-block;
-    background-color: #ffffff;
-    border-radius: 50%;
-    position: absolute;
-}
 .iconcollection {
   color: red;
 }

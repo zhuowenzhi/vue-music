@@ -12,6 +12,9 @@ export default {
   name: 'LoginPage',
   components: {
     Login
+  },
+  created: function () {
+    this.$emit('public_audio', false);
   }
 }
 </script>
