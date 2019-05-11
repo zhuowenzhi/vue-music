@@ -113,12 +113,22 @@ export default {
       this.currentList = JSON.parse(localStorage.getItem('currentSongList'))
       console.log(this.currentList)
       this.list = this.currentList 
-      let song = this.currentList[0]
+      let currentSong = this.currentList[0]
       
-      localStorage.setItem('currentSong', JSON.stringify(song))
-      const currentSong = JSON.parse(localStorage.getItem('currentSong'))
+      localStorage.setItem('currentSong', JSON.stringify(currentSong))
+      const song = JSON.parse(localStorage.getItem('currentSong'))
       console.log(currentSong)
-      this.audioInfo(currentSong)
+      var _this = this
+      _this.audio.audioSrc = song.url
+      _this.audio.imgUrl = song.pic
+      _this.audio.singerName = song.singer
+      _this.audio.songName = song.name
+      _this.audio.totalTime = song.time
+      // Math.floor(song.time / 60) + ":" + (song.time % 60 / 100).toFixed(2).slice(-2)
+      _this.audio.currentTime = song.currentTime
+      _this.audio.songId = song.songid
+      _this.$refs.audio.src = song.audioSrc
+      // this.audioInfo(currentSong)
     },
     // 将数据加入audio
     audioInfo (song) {

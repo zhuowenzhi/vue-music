@@ -1,10 +1,6 @@
 <template>
 
   <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-
-    <!-- <el-form-item  prop="phone">
-      <el-input v-model="form.phone" maxlength="11" placeholder="手机号码"></el-input>
-    </el-form-item> -->
      <el-form-item  prop="sex">
       <el-radio v-model="form.sex" label="1">男</el-radio>
       <el-radio v-model="form.sex" label="0">女</el-radio>
@@ -18,13 +14,6 @@
      <el-form-item  prop="address">
       <el-input v-model="form.address" placeholder="地址(如广东湛江)"></el-input>
     </el-form-item>
-
-<!--     
-     <el-form-item  prop="sex">
-      <el-input v-model="form.sex" maxlength="1" placeholder="性别"></el-input>
-    </el-form-item> -->
-   
- 
      <el-form-item prop="password">
       <el-input type="password" v-model="form.password" placeholder="密码"></el-input>
     </el-form-item>
@@ -62,7 +51,6 @@ export default {
   data () {
     return {
       form: {
-        // phone: '',
         password: '',
         passwordRepeat: '',
         name: '',

@@ -82,6 +82,9 @@ export default {
     _this.getAllRank()
     // _this.handlePageList()
   },
+  created () {
+    this.$emit('public_audio', true)
+  }
 }
 </script>
 

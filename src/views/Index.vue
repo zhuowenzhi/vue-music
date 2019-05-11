@@ -142,6 +142,7 @@ export default {
   },
   created () {
     this.handlePageList()
+    this.$emit('public_audio', true)
   }
 }
 </script>

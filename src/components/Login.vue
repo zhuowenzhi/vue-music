@@ -1,8 +1,5 @@
 <template>
   <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-    <!-- <el-form-item prop="phone">
-      <el-input v-model="form.phone" maxlength="11" placeholder="手机号码"></el-input>
-    </el-form-item> -->
     <el-form-item prop="name">
       <el-input v-model="form.name" placeholder="请输入昵称"></el-input>
     </el-form-item>
@@ -42,31 +39,13 @@ export default {
   data () {
     return {
       form: {
-        // phone: '',
         name: '',
         password: '',
         verifycode: ''
       },
       identifyCodes: '1234567890',
       identifyCode: '',
-      // verifycode: '',
       rules: {
-        // phone: [
-        //   {
-        //     required: true,
-        //     trigger: 'blur'
-        //   },
-        //   {
-        //     min: 11,
-        //     max: 11,
-        //     message: '请输入11位数字',
-        //     trigger: 'blur'
-        //   },
-        //   {
-        //     pattern: /^1[34578]\d{9}$/,
-        //     message: '请输入正确的电话号码'
-        //   }
-        // ],
         password: [
           {
             required: true,
@@ -90,6 +69,9 @@ export default {
   },
   mounted: function () {
     this.refreshCode()
+  },
+  created: function () {
+    this.$emit('public_audio', false);
   },
   methods: {
     login () {

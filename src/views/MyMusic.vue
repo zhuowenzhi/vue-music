@@ -115,6 +115,7 @@ export default {
   },
   created () {
     this.getSongListInfo ()
+    this.$emit('public_audio', true)
   },
   watch: {
     currentSong(newSong, oldSong) {

@@ -101,6 +101,7 @@ export default {
   },
   mounted () {
     this.getUserInfo()
+    this.$emit('public_audio', true)
   }
 }
 </script>

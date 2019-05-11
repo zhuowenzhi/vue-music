@@ -78,8 +78,6 @@ export default {
       }
     }
   },
-  computed: {
-  },
   methods: {
     showTotalIntro () {
       this.showTotal = !this.showTotal
@@ -99,6 +97,7 @@ export default {
   },
   created () {
     this.getUSerInfo()
+    this.$emit('public_audio', true)
   },
   watch: {
     currentSong(newSong, oldSong) {
