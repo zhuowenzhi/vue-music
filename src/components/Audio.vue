@@ -87,6 +87,18 @@ export default {
     }
   },
   methods: {
+    // 点击收藏歌曲
+    open() {
+      this.$alert('收藏歌曲成功', '收藏歌曲', {
+        confirmButtonText: '确定',
+        callback: action => {
+          this.$message({
+            type: 'info',
+            message: `action: ${ action }`
+          });
+        }
+      });
+    },
     // 歌曲列表显示隐藏
     showList () {
       bus.$emit('showList')
@@ -167,6 +179,7 @@ export default {
       }).then(function (res){
         console.log(res)
         console.log("喜欢")
+        _this.open()
       }).catch(function (error) {
         console.log(error)
       })
