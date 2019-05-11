@@ -12,6 +12,9 @@ export default {
   name: 'RegisterPage',
   components: {
     Register
+  },
+  created: function () {
+    this.$emit('public_audio', false);
   }
 }
 </script>
