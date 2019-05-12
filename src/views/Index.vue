@@ -72,7 +72,7 @@ export default {
         song: ''
       },
       sendParams: {
-        url: this.baseUrl + 'kd/recommendSong/',
+        url: this.baseUrl + 'kd/recommendSong/'
       },
       params: {
         userId: this.$cookieStore.getCookie('userId'),

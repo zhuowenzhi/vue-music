@@ -143,7 +143,6 @@ export default {
               alert(res.data.msg)
               _this.$router.push('/login')
             }
-            
         }).catch(function (error) {
           console.log(error)
         })

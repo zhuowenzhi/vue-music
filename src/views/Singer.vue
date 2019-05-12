@@ -1,4 +1,3 @@
-    
 <template>
   <div class="index">
     <div class="nav">
@@ -37,15 +36,12 @@
 
 <script>
 import NavMenu from '../components/NavMenu.vue'
-// import Recommend from '../components/Recommend.vue'
 import SingerRecommed from '../components/SingerRecommed.vue'
-import { constants } from 'crypto';
 export default {
   name: 'Singer',
   components: {
     NavMenu,
     SingerRecommed
-    // Recommend
   },
   data () {
     return {
@@ -85,9 +81,11 @@ export default {
     // 点击左侧栏获取歌手类型
     getSingerId (id, name) {
       console.log(id)
-       var _this = this
-       _this.params.typeId = id
+      var _this = this
+      _this.params.typeId = id
+       _this.params.pageNum = 1
       _this.typeName = name
+      _this.list = []
       _this.handlePageList()
     },
     handleSizeChange (size) {
@@ -97,7 +95,7 @@ export default {
     },
     handleCurrentChange (currentPage) {
       var _this = this
-      _this.pageNum = currentPage
+      _this.params.pageNum = currentPage
       _this.list = []
       _this.handlePageList()
     },

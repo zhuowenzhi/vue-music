@@ -70,7 +70,7 @@ export default {
       pageNum: 1,
       sendParams: {
         url: this.baseUrl + 'kd/getMusicSheetById/',
-        songlistId: this.$route.query.songlistId,
+        songlistId: this.$route.query.songlistId
       },
       params: {
         songlistId: this.$route.query.songlistId,
